@@ -4,7 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Math/UnrealMathUtility.h"
 #include "Test_Character.generated.h"
+
+class UCameraComponent;
+class USpringArmComponent;
 
 UCLASS()
 class TEAMHEAVENAGILE_API ATest_Character : public ACharacter
@@ -26,4 +32,22 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	void ForwardMovement(float Value);
+	void SidewaysMovement(float Value);
+	void JumpCharacter();
+	void PitchCamera(float AxisValue);
+	void YawCamera(float AxisValue);
+
+	UPROPERTY(EditAnywhere)
+		UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere)
+		USpringArmComponent* CameraSpringArm;
+
+	UPROPERTY(EditAnywhere)
+		float MoveSpeed = 100.0f;
+
+	FVector DeltaLocation;
+	FVector2D CameraInput;
 };
