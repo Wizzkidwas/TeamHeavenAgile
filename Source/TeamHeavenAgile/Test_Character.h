@@ -48,6 +48,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		float MoveSpeed = 100.0f;
 
-	FVector DeltaLocation;
-	FVector2D CameraInput;
+	//FVector DeltaLocation;
+	//FVector2D CameraInput;
 };
