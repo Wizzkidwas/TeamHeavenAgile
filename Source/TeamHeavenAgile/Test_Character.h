@@ -26,4 +26,30 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+<<<<<<< Updated upstream
+=======
+private:
+	void ForwardMovement(float Value);
+	void SidewaysMovement(float Value);
+	void JumpCharacter();
+	void PitchCamera(float AxisValue);
+	void YawCamera(float AxisValue);
+	void SwordAttack();
+	void FireDecider();
+
+	UPROPERTY(EditAnywhere)
+		UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere)
+		USpringArmComponent* CameraSpringArm;
+
+	UPROPERTY(EditAnywhere)
+		float MoveSpeed = 100.0f;
+
+	FVector DeltaLocation;
+	FVector2D CameraInput;
+	
+	UPROPERTY(EditAnywhere)
+		bool CanAttack = true;
+>>>>>>> Stashed changes
 };
