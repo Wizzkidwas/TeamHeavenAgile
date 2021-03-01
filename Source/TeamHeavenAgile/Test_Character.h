@@ -36,8 +36,15 @@ private:
 	void ForwardMovement(float Value);
 	void SidewaysMovement(float Value);
 	void JumpCharacter();
+	void Dodge();
+	void LeftLightAttack();
+	void LeftHeavyAttack();
+	void RightLightAttack();
+	void RightHeavyAttack();
+	void ActionFinished();
+	void VacantTimeUp();
 	void PitchCamera(float AxisValue);
-	void YawCamera(float AxisValue);
+	void YawCamera(float AxisValue);                                         
 
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* Camera;
@@ -48,6 +55,19 @@ private:
 	UPROPERTY(EditAnywhere)
 		float MoveSpeed = 100.0f;
 
-	//FVector DeltaLocation;
-	//FVector2D CameraInput;
+	UPROPERTY()			    FTimerHandle DodgeTimer;
+	UPROPERTY(EditAnywhere) float DodgeDuration = 2.0f;
+	UPROPERTY()			    FTimerHandle DodgeActivateTimer;
+	UPROPERTY(EditAnywhere) float DodgeActivateDuration = 2.0f;
+	UPROPERTY()			    FTimerHandle LeftLightTimer;
+	UPROPERTY(EditAnywhere) float LeftLightDuration = 2.0f;
+	UPROPERTY()			    FTimerHandle LeftHeavyTimer;
+	UPROPERTY(EditAnywhere) float LeftHeavyDuration = 2.0f;
+	UPROPERTY()			    FTimerHandle RightLightTimer;
+	UPROPERTY(EditAnywhere) float RightLightDuration = 2.0f;
+	UPROPERTY()			    FTimerHandle RightHeavyTimer;
+	UPROPERTY(EditAnywhere) float RightHeavyDuration = 2.0f;
+
+	enum class States { idle, block, leftLight, leftHeavy, rightLight, rightHeavy, Dodge };
+	States currentState = States::idle;
 };
