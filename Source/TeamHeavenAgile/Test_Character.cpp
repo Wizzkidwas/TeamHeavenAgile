@@ -32,7 +32,28 @@ void ATest_Character::BeginPlay()
 void ATest_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FString Message = FString::Printf(TEXT("Current State: %s"), currentState));
+	FString message = nullptr;
+	switch(currentState)
+		case States::leftLight:
+			message = TEXT("State: leftLight");
+			break;
+		case States::leftHeavy:
+			message = TEXT("State: leftHeavy");
+			break;
+		case States::rightLight:
+			message = TEXT("State: rightLight");
+			break;
+		case States::rightHeavy:
+			message = TEXT("State: rightHeavy");
+			break;
+		case States::Dodge:
+			message = TEXT("State: Dodge");
+			break;
+		case States::Block:
+			message = TEXT("State: Block");
+		default
+			message = TEXT("State: idle");
+			break;
 	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, Message);
 }
 
@@ -73,6 +94,9 @@ void ATest_Character::Dodge()
 {
 	if (currentState == States::idle) {
 		if (GetWorld()->GetTimerManager().IsTimerActive(DodgeActivateTimer)) {
+
+			//GetMesh()->AddImpulse(FVector * ImpulseForce, true); <-Need to swap FVector for current movement vector (i.e. rightback if s and d  pressed)
+
 			GetWorld()->GetTimerManager().SetTimer(DodgeTimer, this, &ATest_Character::ActionFinished, DodgeDuration, false);
 			currentState = States::Dodge;
 		}
@@ -85,6 +109,7 @@ void ATest_Character::Dodge()
 void ATest_Character::LeftLightAttack()
 {
 	if (currentState == States::idle) {
+
 		GetWorld()->GetTimerManager().SetTimer(LeftLightTimer, this, &ATest_Character::ActionFinished, LeftLightDuration, false);
 		currentState = States::leftLight;
 	}
@@ -93,6 +118,7 @@ void ATest_Character::LeftLightAttack()
 void ATest_Character::LeftHeavyAttack()
 {
 	if (currentState == States::idle) {
+
 		GetWorld()->GetTimerManager().SetTimer(LeftHeavyTimer, this, &ATest_Character::ActionFinished, LeftHeavyDuration, false);
 		currentState = States::leftHeavy;
 	}
@@ -101,6 +127,7 @@ void ATest_Character::LeftHeavyAttack()
 void ATest_Character::RightLightAttack()
 {
 	if (currentState == States::idle) {
+
 		GetWorld()->GetTimerManager().SetTimer(RightLightTimer, this, &ATest_Character::ActionFinished, RightLightDuration, false);
 		currentState = States::rightLight;
 	}
@@ -109,6 +136,7 @@ void ATest_Character::RightLightAttack()
 void ATest_Character::RightHeavyAttack()
 {
 	if (currentState == States::idle) {
+
 		GetWorld()->GetTimerManager().SetTimer(RightHeavyTimer, this, &ATest_Character::ActionFinished, RightHeavyDuration, false);
 		currentState = States::rightHeavy;
 	}

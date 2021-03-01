@@ -55,6 +55,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		float MoveSpeed = 100.0f;
 
+	UPROPERTY(EditAnywhere)
+		float ImpulseForce = 100.0f;
+
 	UPROPERTY()			    FTimerHandle DodgeTimer;
 	UPROPERTY(EditAnywhere) float DodgeDuration = 2.0f;
 	UPROPERTY()			    FTimerHandle DodgeActivateTimer;
@@ -68,6 +71,6 @@ private:
 	UPROPERTY()			    FTimerHandle RightHeavyTimer;
 	UPROPERTY(EditAnywhere) float RightHeavyDuration = 2.0f;
 
-	enum class States { idle, block, leftLight, leftHeavy, rightLight, rightHeavy, Dodge };
+	enum class States { idle, Block, leftLight, leftHeavy, rightLight, rightHeavy, Dodge };
 	States currentState = States::idle;
 };
