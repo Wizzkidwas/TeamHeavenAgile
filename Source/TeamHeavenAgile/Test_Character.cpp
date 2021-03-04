@@ -32,29 +32,31 @@ void ATest_Character::BeginPlay()
 void ATest_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FString message = nullptr;
-	switch(currentState)
-		case States::leftLight:
-			message = TEXT("State: leftLight");
-			break;
-		case States::leftHeavy:
-			message = TEXT("State: leftHeavy");
-			break;
-		case States::rightLight:
-			message = TEXT("State: rightLight");
-			break;
-		case States::rightHeavy:
-			message = TEXT("State: rightHeavy");
-			break;
-		case States::Dodge:
-			message = TEXT("State: Dodge");
-			break;
-		case States::Block:
-			message = TEXT("State: Block");
-		default
-			message = TEXT("State: idle");
-			break;
-	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, Message);
+	FString message = TEXT("Error Message");
+	switch (State)
+	{
+	case States::LeftLight:
+		message = TEXT("State: leftLight");
+		break;
+	case States::LeftHeavy:
+		message = TEXT("State: leftHeavy");
+		break;
+	case States::RightLight:
+		message = TEXT("State: rightLight");
+		break;
+	case States::RightHeavy:
+		message = TEXT("State: rightHeavy");
+		break;
+	case States::Dodge:
+		message = TEXT("State: Dodge");
+		break;
+	case States::Block:
+		message = TEXT("State: Block");
+	case States::Idle:
+		message = TEXT("State: idle");
+		break;
+	}
+	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, message);
 }
 
 // Called to bind functionality to input
@@ -68,7 +70,9 @@ void ATest_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ATest_Character::JumpCharacter);
 	PlayerInputComponent->BindAction("LeftAttack", IE_Pressed, this, &ATest_Character::LeftLightAttack);
 	PlayerInputComponent->BindAction("RightAttack", IE_Pressed, this, &ATest_Character::RightLightAttack);
-	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &ATest_Character::Dodge);
+	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &ATest_Character::ActivateDodge);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ATest_Character::ActivateCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ATest_Character::CancelCrouch);
 	PlayerInputComponent->BindAction("LeftHeavyAttack", IE_Pressed, this, &ATest_Character::LeftHeavyAttack);
 	PlayerInputComponent->BindAction("RightHeavyAttack", IE_Pressed, this, &ATest_Character::RightHeavyAttack);
 
@@ -90,15 +94,15 @@ void ATest_Character::JumpCharacter()
 	Jump();
 }
 
-void ATest_Character::Dodge()
+void ATest_Character::ActivateDodge()
 {
-	if (currentState == States::idle) {
+	if (State == States::Idle) {
 		if (GetWorld()->GetTimerManager().IsTimerActive(DodgeActivateTimer)) {
 
 			//GetMesh()->AddImpulse(FVector * ImpulseForce, true); <-Need to swap FVector for current movement vector (i.e. rightback if s and d  pressed)
 
 			GetWorld()->GetTimerManager().SetTimer(DodgeTimer, this, &ATest_Character::ActionFinished, DodgeDuration, false);
-			currentState = States::Dodge;
+			State = States::Dodge;
 		}
 		else {
 			GetWorld()->GetTimerManager().SetTimer(DodgeActivateTimer, this, &ATest_Character::VacantTimeUp, DodgeActivateDuration, false);
@@ -106,45 +110,59 @@ void ATest_Character::Dodge()
 	}
 }
 
+void ATest_Character::ActivateCrouch()
+{
+	if (State == States::Idle && CanCrouch()) {
+		Crouch();
+	}
+}
+
+void ATest_Character::CancelCrouch()
+{
+	if (State == States::Idle) {
+		UnCrouch();
+	}
+}
+
 void ATest_Character::LeftLightAttack()
 {
-	if (currentState == States::idle) {
+	if (State == States::Idle) {
 
 		GetWorld()->GetTimerManager().SetTimer(LeftLightTimer, this, &ATest_Character::ActionFinished, LeftLightDuration, false);
-		currentState = States::leftLight;
+		State = States::LeftLight;
 	}
 }
 
 void ATest_Character::LeftHeavyAttack()
 {
-	if (currentState == States::idle) {
+	if (State == States::Idle) {
 
 		GetWorld()->GetTimerManager().SetTimer(LeftHeavyTimer, this, &ATest_Character::ActionFinished, LeftHeavyDuration, false);
-		currentState = States::leftHeavy;
+		State = States::LeftHeavy;
 	}
 }
 
 void ATest_Character::RightLightAttack()
 {
-	if (currentState == States::idle) {
+	if (State == States::Idle) {
 
 		GetWorld()->GetTimerManager().SetTimer(RightLightTimer, this, &ATest_Character::ActionFinished, RightLightDuration, false);
-		currentState = States::rightLight;
+		State = States::RightLight;
 	}
 }
 
 void ATest_Character::RightHeavyAttack()
 {
-	if (currentState == States::idle) {
+	if (State == States::Idle) {
 
 		GetWorld()->GetTimerManager().SetTimer(RightHeavyTimer, this, &ATest_Character::ActionFinished, RightHeavyDuration, false);
-		currentState = States::rightHeavy;
+		State = States::RightHeavy;
 	}
 }
 
 void ATest_Character::ActionFinished()
 {
-	currentState = States::idle;
+	State = States::Idle;
 }
 
 void ATest_Character::VacantTimeUp()

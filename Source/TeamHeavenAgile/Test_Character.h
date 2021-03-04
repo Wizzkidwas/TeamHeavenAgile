@@ -12,6 +12,20 @@
 class UCameraComponent;
 class USpringArmComponent;
 
+UENUM()
+	enum class States : uint8
+	{
+		Idle		UMETA(DisplayName = "Idle"),
+		Block		UMETA(DisplayName = "Block"),
+		LeftLight	UMETA(DisplayName = "LeftLight"),
+		LeftHeavy	UMETA(DisplayName = "LeftHeavy"),
+		RightLight	UMETA(DisplayName = "RightLight"),
+		RightHeavy	UMETA(DisplayName = "RightHeavy"),
+		Dodge		UMETA(DisplayName = "Dodge"),
+	};
+
+
+
 UCLASS()
 class TEAMHEAVENAGILE_API ATest_Character : public ACharacter
 {
@@ -36,7 +50,9 @@ private:
 	void ForwardMovement(float Value);
 	void SidewaysMovement(float Value);
 	void JumpCharacter();
-	void Dodge();
+	void ActivateDodge();
+	void ActivateCrouch();
+	void CancelCrouch();
 	void LeftLightAttack();
 	void LeftHeavyAttack();
 	void RightLightAttack();
@@ -71,6 +87,6 @@ private:
 	UPROPERTY()			    FTimerHandle RightHeavyTimer;
 	UPROPERTY(EditAnywhere) float RightHeavyDuration = 2.0f;
 
-	enum class States { idle, Block, leftLight, leftHeavy, rightLight, rightHeavy, Dodge };
-	States currentState = States::idle;
+	
+	UPROPERTY(EditAnywhere, Category = Status) TEnumAsByte<States> State = States::Idle;
 };
