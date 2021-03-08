@@ -7,24 +7,23 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "ASword.h"
 #include "Test_Character.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 
 UENUM()
-	enum class States : uint8
-	{
-		Idle		UMETA(DisplayName = "Idle"),
-		Block		UMETA(DisplayName = "Block"),
-		LeftLight	UMETA(DisplayName = "LeftLight"),
-		LeftHeavy	UMETA(DisplayName = "LeftHeavy"),
-		RightLight	UMETA(DisplayName = "RightLight"),
-		RightHeavy	UMETA(DisplayName = "RightHeavy"),
-		Dodge		UMETA(DisplayName = "Dodge"),
-	};
-
-
+enum class States : uint8
+{
+	Idle		UMETA(DisplayName = "Idle"),
+	Block		UMETA(DisplayName = "Block"),
+	LeftLight	UMETA(DisplayName = "LeftLight"),
+	LeftHeavy	UMETA(DisplayName = "LeftHeavy"),
+	RightLight	UMETA(DisplayName = "RightLight"),
+	RightHeavy	UMETA(DisplayName = "RightHeavy"),
+	Dodge		UMETA(DisplayName = "Dodge"),
+};
 
 UCLASS()
 class TEAMHEAVENAGILE_API ATest_Character : public ACharacter
@@ -45,6 +44,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION() States GetCurrentState();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status) TEnumAsByte<States> State = States::Idle;
 
 private:
 	void ForwardMovement(float Value);
@@ -87,6 +89,6 @@ private:
 	UPROPERTY()			    FTimerHandle RightHeavyTimer;
 	UPROPERTY(EditAnywhere) float RightHeavyDuration = 2.0f;
 
+	UPROPERTY(EditAnywhere) TSubclassOf <AASword> swordClass;
 	
-	UPROPERTY(EditAnywhere, Category = Status) TEnumAsByte<States> State = States::Idle;
 };

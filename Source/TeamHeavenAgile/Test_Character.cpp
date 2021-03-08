@@ -2,6 +2,7 @@
 
 
 #include "Test_Character.h"
+#include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
 // Sets default values
 ATest_Character::ATest_Character()
@@ -19,13 +20,19 @@ ATest_Character::ATest_Character()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraSpringArm, USpringArmComponent::SocketName);
+	
 }
 
 // Called when the game starts or when spawned
 void ATest_Character::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (swordClass) {
+		AASword* Sword = GetWorld()->SpawnActor<AASword>(swordClass, FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
+		Sword->SetActorRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
+		Sword->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weaponSocket"));
+	}
 }
 
 // Called every frame
@@ -76,6 +83,11 @@ void ATest_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction("LeftHeavyAttack", IE_Pressed, this, &ATest_Character::LeftHeavyAttack);
 	PlayerInputComponent->BindAction("RightHeavyAttack", IE_Pressed, this, &ATest_Character::RightHeavyAttack);
 
+}
+
+States ATest_Character::GetCurrentState()
+{
+	return State;
 }
 
 void ATest_Character::ForwardMovement(float Value)
