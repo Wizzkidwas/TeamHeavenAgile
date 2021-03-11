@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ASword.h"
 #include "Test_Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "ASword.h"
 
 // Sets default values
 AASword::AASword()
