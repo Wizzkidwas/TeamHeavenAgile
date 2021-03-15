@@ -31,11 +31,12 @@ public:
 
 private:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-	UPROPERTY(EditAnywhere) TSubclassOf<ASlimeEnemy> SlimeClass;
+	UPROPERTY(EditAnywhere) TSubclassOf<ASlimeEnemy> slimeClass;
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* SlimeMesh;
 	UPROPERTY(EditAnywhere) USphereComponent* CollisionMesh;
 	UPROPERTY(EditAnywhere) int SlimeSize = 3;
 	UPROPERTY(EditAnywhere) float BaseDamage = 10.0f;
+	UPROPERTY(EditAnywhere) float SpawnOffset = 10.0f;
 	UPROPERTY() float Damage = BaseDamage * SlimeSize;
 	UPROPERTY(EditAnywhere) float BaseHealth = 20.0f;
 	UPROPERTY() float Health = BaseHealth * SlimeSize;

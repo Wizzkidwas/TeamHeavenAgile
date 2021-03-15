@@ -15,13 +15,12 @@ ASlimeEnemy::ASlimeEnemy()
 	SlimeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Slime"));
 	SlimeMesh->SetupAttachment(RootComponent);
 	SlimeMesh->SetNotifyRigidBodyCollision(true);
-	SlimeMesh->SetSimulatePhysics(true);
 }
 
 void ASlimeEnemy::Initialise(int slimeSize)
 {
 	SlimeSize = slimeSize;
-	//SlimeMesh->SetRelativeScale3D(FVector(slimeSize, slimeSize, slimeSize));
+	CollisionMesh->SetRelativeScale3D(FVector(SlimeSize, SlimeSize, SlimeSize));
 	Damage = BaseDamage * SlimeSize;
 	Health = BaseHealth * SlimeSize;
 }
@@ -32,6 +31,7 @@ void ASlimeEnemy::BeginPlay()
 	Super::BeginPlay();
 	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &ASlimeEnemy::OnOverlapBegin);
 	CollisionMesh->OnComponentEndOverlap.AddDynamic(this, &ASlimeEnemy::OnOverlapEnd);
+	CollisionMesh->SetRelativeScale3D(FVector(SlimeSize, SlimeSize, SlimeSize));
 }
 
 // Called every frame
@@ -65,10 +65,10 @@ float ASlimeEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& Dam
 	if (Health <= 0) {
 		if (SlimeSize > 1) {
 			SlimeSize--;
-			ASlimeEnemy* SlimeTemp1 = GetWorld()->SpawnActor<ASlimeEnemy>(SlimeClass, GetActorLocation(), GetActorRotation());
-			//SlimeTemp1->Initialise(SlimeSize);
-			ASlimeEnemy* SlimeTemp2 = GetWorld()->SpawnActor<ASlimeEnemy>(SlimeClass, GetActorLocation(), GetActorRotation());
-			//SlimeTemp2->Initialise(SlimeSize);
+			ASlimeEnemy* SlimeTemp1 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + (SpawnOffset * SlimeSize)), GetActorRotation());
+			if(SlimeTemp1) SlimeTemp1->Initialise(SlimeSize);
+			ASlimeEnemy* SlimeTemp2 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + ((SpawnOffset * SlimeSize) * 2)), GetActorRotation());
+			if (SlimeTemp2) SlimeTemp2->Initialise(SlimeSize);
 		}
 		Destroy();
 	}
