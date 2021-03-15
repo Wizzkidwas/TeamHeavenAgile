@@ -8,6 +8,8 @@
 #include "SlimeAIController.h"
 #include "SlimeEnemy.generated.h"
 
+class AEnemyRoomGameMode;
+
 UCLASS()
 class TEAMHEAVENAGILE_API ASlimeEnemy : public APawn
 {
@@ -31,9 +33,11 @@ public:
 
 private:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	UPROPERTY() AEnemyRoomGameMode* EnemyRoomGameModeRef;
 	UPROPERTY(EditAnywhere) TSubclassOf<ASlimeEnemy> slimeClass;
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* SlimeMesh;
 	UPROPERTY(EditAnywhere) USphereComponent* CollisionMesh;
+	UPROPERTY(EditAnywhere) bool bEnableSpliting = true;
 	UPROPERTY(EditAnywhere) int SlimeSize = 3;
 	UPROPERTY(EditAnywhere) float BaseDamage = 10.0f;
 	UPROPERTY(EditAnywhere) float SpawnOffset = 10.0f;

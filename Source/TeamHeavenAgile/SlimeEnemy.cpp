@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SlimeEnemy.h"
+#include "EnemyRoomGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -61,15 +62,25 @@ void ASlimeEnemy::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* Othe
 
 float ASlimeEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
 	Health -= DamageAmount;
-
+	EnemyRoomGameModeRef = Cast<AEnemyRoomGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	
 	if (Health <= 0) {
-		if (SlimeSize > 1) {
-			SlimeSize--;
-			ASlimeEnemy* SlimeTemp1 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + (SpawnOffset * SlimeSize)), GetActorRotation());
-			if(SlimeTemp1) SlimeTemp1->Initialise(SlimeSize);
-			ASlimeEnemy* SlimeTemp2 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + ((SpawnOffset * SlimeSize) * 2)), GetActorRotation());
-			if (SlimeTemp2) SlimeTemp2->Initialise(SlimeSize);
+		if (bEnableSpliting) {
+			if (SlimeSize > 1) {
+				SlimeSize--;
+				ASlimeEnemy* SlimeTemp1 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X, GetActorLocation().Y + (SpawnOffset * SlimeSize), GetActorLocation().Z ), GetActorRotation());
+				if (SlimeTemp1) {
+					if(EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemySpawned();
+					SlimeTemp1->Initialise(SlimeSize);
+				}
+				ASlimeEnemy* SlimeTemp2 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X + (SpawnOffset * SlimeSize), GetActorLocation().Y, GetActorLocation().Z ), GetActorRotation());
+				if (SlimeTemp2) {
+					if (EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemySpawned();
+					SlimeTemp2->Initialise(SlimeSize);
+				}
+			}
 		}
+		if (EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemyDefeated();
 		Destroy();
 	}
 	return DamageAmount;
