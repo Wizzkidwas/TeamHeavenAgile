@@ -3,3 +3,12 @@
 
 #include "SlimeAIController.h"
 
+void ASlimeAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void ASlimeAIController::OnPossess(APawn* InPawn) {
+	Super::OnPossess(InPawn);
+
+}

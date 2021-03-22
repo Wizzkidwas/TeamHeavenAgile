@@ -4,22 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "SlimeAIController.generated.h"
+#include "SkeletonAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TEAMHEAVENAGILE_API ASlimeAIController : public AAIController
+class TEAMHEAVENAGILE_API ASkeletonAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	UPROPERTY(EditAnywhere) UBehaviorTree* BT_SlimeAI;
+	UPROPERTY(EditAnywhere) UBehaviorTree* BT_SkeletonAI;
 
 public:
 

@@ -85,6 +85,18 @@ void ATest_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
+
+float ATest_Character::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
+	Health -= DamageAmount;
+
+	//Drops Ball and updates Game mode upon death. Also activates respawn timer.
+	if (Health <= 0) {
+		Destroy();
+	}
+	return DamageAmount;
+}
+
+
 States ATest_Character::GetCurrentState()
 {
 	return State;

@@ -49,6 +49,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status) TEnumAsByte<States> State = States::Idle;
 
 private:
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	void ForwardMovement(float Value);
 	void SidewaysMovement(float Value);
 	void JumpCharacter();
@@ -75,6 +76,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		float ImpulseForce = 100.0f;
+
+	UPROPERTY(EditAnywhere)
+		float Health = 100.0f;
 
 	UPROPERTY()			    FTimerHandle DodgeTimer;
 	UPROPERTY(EditAnywhere) float DodgeDuration = 2.0f;
