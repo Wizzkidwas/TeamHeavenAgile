@@ -8,7 +8,7 @@
 #include "AMelee.h"
 #include "ASword.generated.h"
 
-class ATest_Character;
+class ATest_PlayerController;
 
 UCLASS()
 class TEAMHEAVENAGILE_API AASword : public AAMelee
@@ -34,5 +34,5 @@ private:
 	UPROPERTY(EditAnywhere) float lightDamage = 15.0f;
 	UPROPERTY(EditAnywhere) float heavyDamage = 40.0f;
 	UPROPERTY() TArray<AActor*> TempActorsHit;
-	UPROPERTY() ATest_Character* characterRef;
+	UPROPERTY() ATest_PlayerController* characterRef;
 };

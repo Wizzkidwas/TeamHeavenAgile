@@ -3,6 +3,7 @@
 
 #include "Test_Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 #include "Engine/Engine.h"
 // Sets default values
 ATest_Character::ATest_Character()
@@ -28,63 +29,14 @@ void ATest_Character::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Health = HealthTotal;
+
 	if (swordClass) {
 		AASword* Sword = GetWorld()->SpawnActor<AASword>(swordClass, FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
 		Sword->SetActorRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
 		Sword->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weaponSocket"));
 	}
 }
-
-// Called every frame
-void ATest_Character::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	FString message = TEXT("Error Message");
-	switch (State)
-	{
-	case States::LeftLight:
-		message = TEXT("State: leftLight");
-		break;
-	case States::LeftHeavy:
-		message = TEXT("State: leftHeavy");
-		break;
-	case States::RightLight:
-		message = TEXT("State: rightLight");
-		break;
-	case States::RightHeavy:
-		message = TEXT("State: rightHeavy");
-		break;
-	case States::Dodge:
-		message = TEXT("State: Dodge");
-		break;
-	case States::Block:
-		message = TEXT("State: Block");
-	case States::Idle:
-		message = TEXT("State: idle");
-		break;
-	}
-	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, message);
-}
-
-// Called to bind functionality to input
-void ATest_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("Forwards", this, &ATest_Character::ForwardMovement);
-	PlayerInputComponent->BindAxis("Sideways", this, &ATest_Character::SidewaysMovement);
-	PlayerInputComponent->BindAxis("CameraVertical", this, &ATest_Character::PitchCamera);
-	PlayerInputComponent->BindAxis("CameraHorizontal", this, &ATest_Character::YawCamera);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ATest_Character::JumpCharacter);
-	PlayerInputComponent->BindAction("LeftAttack", IE_Pressed, this, &ATest_Character::LeftLightAttack);
-	PlayerInputComponent->BindAction("RightAttack", IE_Pressed, this, &ATest_Character::RightLightAttack);
-	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &ATest_Character::ActivateDodge);
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ATest_Character::ActivateCrouch);
-	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ATest_Character::CancelCrouch);
-	PlayerInputComponent->BindAction("LeftHeavyAttack", IE_Pressed, this, &ATest_Character::LeftHeavyAttack);
-	PlayerInputComponent->BindAction("RightHeavyAttack", IE_Pressed, this, &ATest_Character::RightHeavyAttack);
-
-}
-
 
 float ATest_Character::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
 	Health -= DamageAmount;
@@ -94,111 +46,4 @@ float ATest_Character::TakeDamage(float DamageAmount, struct FDamageEvent const&
 		Destroy();
 	}
 	return DamageAmount;
-}
-
-
-States ATest_Character::GetCurrentState()
-{
-	return State;
-}
-
-void ATest_Character::ForwardMovement(float Value)
-{
-	AddMovementInput(GetActorForwardVector() * Value);
-}
-
-void ATest_Character::SidewaysMovement(float Value)
-{
-	AddMovementInput(GetActorRightVector() * Value);
-
-}
-
-void ATest_Character::JumpCharacter()
-{
-	Jump();
-}
-
-void ATest_Character::ActivateDodge()
-{
-	if (State == States::Idle) {
-		if (GetWorld()->GetTimerManager().IsTimerActive(DodgeActivateTimer)) {
-
-			//GetMesh()->AddImpulse(FVector * ImpulseForce, true); <-Need to swap FVector for current movement vector (i.e. rightback if s and d  pressed)
-
-			GetWorld()->GetTimerManager().SetTimer(DodgeTimer, this, &ATest_Character::ActionFinished, DodgeDuration, false);
-			State = States::Dodge;
-		}
-		else {
-			GetWorld()->GetTimerManager().SetTimer(DodgeActivateTimer, this, &ATest_Character::VacantTimeUp, DodgeActivateDuration, false);
-		}
-	}
-}
-
-void ATest_Character::ActivateCrouch()
-{
-	if (State == States::Idle && CanCrouch()) {
-		Crouch();
-	}
-}
-
-void ATest_Character::CancelCrouch()
-{
-	if (State == States::Idle) {
-		UnCrouch();
-	}
-}
-
-void ATest_Character::LeftLightAttack()
-{
-	if (State == States::Idle) {
-
-		GetWorld()->GetTimerManager().SetTimer(LeftLightTimer, this, &ATest_Character::ActionFinished, LeftLightDuration, false);
-		State = States::LeftLight;
-	}
-}
-
-void ATest_Character::LeftHeavyAttack()
-{
-	if (State == States::Idle) {
-
-		GetWorld()->GetTimerManager().SetTimer(LeftHeavyTimer, this, &ATest_Character::ActionFinished, LeftHeavyDuration, false);
-		State = States::LeftHeavy;
-	}
-}
-
-void ATest_Character::RightLightAttack()
-{
-	if (State == States::Idle) {
-
-		GetWorld()->GetTimerManager().SetTimer(RightLightTimer, this, &ATest_Character::ActionFinished, RightLightDuration, false);
-		State = States::RightLight;
-	}
-}
-
-void ATest_Character::RightHeavyAttack()
-{
-	if (State == States::Idle) {
-
-		GetWorld()->GetTimerManager().SetTimer(RightHeavyTimer, this, &ATest_Character::ActionFinished, RightHeavyDuration, false);
-		State = States::RightHeavy;
-	}
-}
-
-void ATest_Character::ActionFinished()
-{
-	State = States::Idle;
-}
-
-void ATest_Character::VacantTimeUp()
-{
-}
-
-void ATest_Character::PitchCamera(float AxisValue)
-{
-	AddControllerPitchInput(AxisValue);
-}
-
-void ATest_Character::YawCamera(float AxisValue)
-{
-	AddControllerYawInput(AxisValue);
 }

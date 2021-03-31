@@ -2,7 +2,7 @@
 
 
 #include "ASword.h"
-#include "Test_Character.h"
+#include "Test_PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -31,8 +31,8 @@ void AASword::BeginPlay()
 void AASword::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	characterRef = Cast<ATest_Character>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (characterRef->GetCurrentState() == States::Idle) {
+	characterRef = Cast<ATest_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (characterRef->GetCurrentState() == States::Idle && characterRef) {
 		if (TempActorsHit.Num() != 0) {
 			TempActorsHit.Empty();
 		}
@@ -40,8 +40,8 @@ void AASword::Tick(float DeltaTime)
 }
 
 void AASword::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	characterRef = Cast<ATest_Character>( UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (OtherActor->ActorHasTag("Hitable")) {
+	characterRef = Cast<ATest_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (OtherActor->ActorHasTag("Hitable") && characterRef) {
 		if (!TempActorsHit.Contains(OtherActor) || (TempActorsHit.Num() == 0)) {
 			TempActorsHit.Emplace(OtherActor);
 			UE_LOG(LogTemp, Warning, TEXT("Hit Made"));
@@ -55,3 +55,4 @@ void AASword::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 		}
 	}
 }
+//crash caused by above code

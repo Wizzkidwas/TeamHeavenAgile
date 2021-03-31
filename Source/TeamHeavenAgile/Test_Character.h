@@ -13,17 +13,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 
-UENUM()
-enum class States : uint8
-{
-	Idle		UMETA(DisplayName = "Idle"),
-	Block		UMETA(DisplayName = "Block"),
-	LeftLight	UMETA(DisplayName = "LeftLight"),
-	LeftHeavy	UMETA(DisplayName = "LeftHeavy"),
-	RightLight	UMETA(DisplayName = "RightLight"),
-	RightHeavy	UMETA(DisplayName = "RightHeavy"),
-	Dodge		UMETA(DisplayName = "Dodge"),
-};
+
 
 UCLASS()
 class TEAMHEAVENAGILE_API ATest_Character : public ACharacter
@@ -38,32 +28,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UFUNCTION() States GetCurrentState();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status) TEnumAsByte<States> State = States::Idle;
-
 private:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-	void ForwardMovement(float Value);
-	void SidewaysMovement(float Value);
-	void JumpCharacter();
-	void ActivateDodge();
-	void ActivateCrouch();
-	void CancelCrouch();
-	void LeftLightAttack();
-	void LeftHeavyAttack();
-	void RightLightAttack();
-	void RightHeavyAttack();
-	void ActionFinished();
-	void VacantTimeUp();
-	void PitchCamera(float AxisValue);
-	void YawCamera(float AxisValue);                                         
 
 	UPROPERTY(EditAnywhere)
 		UCameraComponent* Camera;
@@ -78,7 +44,9 @@ private:
 		float ImpulseForce = 100.0f;
 
 	UPROPERTY(EditAnywhere)
-		float Health = 100.0f;
+		float HealthTotal = 100.0f;
+	UPROPERTY()
+		float Health = HealthTotal;
 
 	UPROPERTY()			    FTimerHandle DodgeTimer;
 	UPROPERTY(EditAnywhere) float DodgeDuration = 2.0f;
@@ -92,7 +60,6 @@ private:
 	UPROPERTY(EditAnywhere) float RightLightDuration = 2.0f;
 	UPROPERTY()			    FTimerHandle RightHeavyTimer;
 	UPROPERTY(EditAnywhere) float RightHeavyDuration = 2.0f;
-
 	UPROPERTY(EditAnywhere) TSubclassOf <AASword> swordClass;
 	
 };
