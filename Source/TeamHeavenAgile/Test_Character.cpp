@@ -39,11 +39,7 @@ void ATest_Character::BeginPlay()
 }
 
 float ATest_Character::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
-	Health -= DamageAmount;
-
-	//Drops Ball and updates Game mode upon death. Also activates respawn timer.
-	if (Health <= 0) {
-		Destroy();
-	}
+	//Sends damage notification through to controller to handle.
+	GetController()->TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	return DamageAmount;
 }
