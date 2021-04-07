@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTTask_FindRandomPosition.generated.h"
+#include "BTTask_FindRandPositionByPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TEAMHEAVENAGILE_API UBTTask_FindRandomPosition : public UBTTask_BlackboardBase
+class TEAMHEAVENAGILE_API UBTTask_FindRandPositionByPlayer : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
