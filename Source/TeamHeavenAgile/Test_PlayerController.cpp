@@ -16,6 +16,7 @@ void ATest_PlayerController::BeginPlay() {
 	PlayerCharacter = Cast<ATest_Character>(GetPawn());
 	//Sets health and ammo to Blueprinted amount and displays counters.
 	Health = HealthTotal;
+	Stamina = StaminaTotal;         
 	PlayerHUDCount = CreateWidget(this, PlayerHUDClass);
 	if (PlayerHUDCount) PlayerHUDCount->AddToViewport();
 }
@@ -60,14 +61,14 @@ void ATest_PlayerController::Tick(float DeltaTime)
 	InputComponent->BindAxis("Sideways", this, &ATest_PlayerController::SidewaysMovement);
 	InputComponent->BindAxis("CameraVertical", this, &ATest_PlayerController::PitchCamera);
 	InputComponent->BindAxis("CameraHorizontal", this, &ATest_PlayerController::YawCamera);
-	InputComponent->BindAction("Jump", IE_Pressed, this, &ATest_PlayerController::JumpCharacter);
+	//InputComponent->BindAction("Jump", IE_Pressed, this, &ATest_PlayerController::JumpCharacter);
 	InputComponent->BindAction("LeftAttack", IE_Pressed, this, &ATest_PlayerController::LeftLightAttack);
-	InputComponent->BindAction("RightAttack", IE_Pressed, this, &ATest_PlayerController::RightLightAttack);
+	InputComponent->BindAction("RightAttack", IE_Pressed, this, &ATest_PlayerController::LeftHeavyAttack);
 	InputComponent->BindAction("Dodge", IE_Pressed, this, &ATest_PlayerController::ActivateDodge);
 	InputComponent->BindAction("Crouch", IE_Pressed, this, &ATest_PlayerController::ActivateCrouch);
 	InputComponent->BindAction("Crouch", IE_Released, this, &ATest_PlayerController::CancelCrouch);
-	InputComponent->BindAction("LeftHeavyAttack", IE_Pressed, this, &ATest_PlayerController::LeftHeavyAttack);
-	InputComponent->BindAction("RightHeavyAttack", IE_Pressed, this, &ATest_PlayerController::RightHeavyAttack);
+	//InputComponent->BindAction("LeftHeavyAttack", IE_Pressed, this, &ATest_PlayerController::LeftHeavyAttack);
+	//InputComponent->BindAction("RightHeavyAttack", IE_Pressed, this, &ATest_PlayerController::RightHeavyAttack);
 
 }
 
@@ -103,18 +104,19 @@ void ATest_PlayerController::SidewaysMovement(float Value)
 	if(PlayerCharacter) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector() * Value);
 }
 
-void ATest_PlayerController::JumpCharacter()
-{
-	if (PlayerCharacter) PlayerCharacter->Jump();
-}
+//void ATest_PlayerController::JumpCharacter()
+//{
+//	if (PlayerCharacter) PlayerCharacter->Jump();
+//}
 
 void ATest_PlayerController::ActivateDodge()
 {
 	if (State == States::Idle) {
 		if (GetWorld()->GetTimerManager().IsTimerActive(DodgeActivateTimer)) {
-
-			//GetMesh()->AddImpulse(FVector * ImpulseForce, true); <-Need to swap FVector for current movement vector (i.e. rightback if s and d  pressed)
-
+			if (PlayerCharacter) {
+				FVector DodgeVector = FVector(PlayerCharacter->GetActorForwardVector().X * DodgeForce, PlayerCharacter->GetActorForwardVector().Y * DodgeForce, 0.0f);
+				PlayerCharacter->LaunchCharacter(DodgeVector, true, false); //<-Need to swap FVector for current movement vector (i.e. rightback if s and d  pressed)
+			}
 			GetWorld()->GetTimerManager().SetTimer(DodgeTimer, this, &ATest_PlayerController::ActionFinished, DodgeDuration, false);
 			State = States::Dodge;
 		}
@@ -156,23 +158,23 @@ void ATest_PlayerController::LeftHeavyAttack()
 	}
 }
 
-void ATest_PlayerController::RightLightAttack()
-{
-	if (State == States::Idle) {
-
-		GetWorld()->GetTimerManager().SetTimer(RightLightTimer, this, &ATest_PlayerController::ActionFinished, RightLightDuration, false);
-		State = States::RightLight;
-	}
-}
-
-void ATest_PlayerController::RightHeavyAttack()
-{
-	if (State == States::Idle) {
-
-		GetWorld()->GetTimerManager().SetTimer(RightHeavyTimer, this, &ATest_PlayerController::ActionFinished, RightHeavyDuration, false);
-		State = States::RightHeavy;
-	}
-}
+//void ATest_PlayerController::RightLightAttack()
+//{
+//	if (State == States::Idle) {
+//
+//		GetWorld()->GetTimerManager().SetTimer(RightLightTimer, this, &ATest_PlayerController::ActionFinished, RightLightDuration, false);
+//		State = States::RightLight;
+//	}
+//}
+//
+//void ATest_PlayerController::RightHeavyAttack()
+//{
+//	if (State == States::Idle) {
+//
+//		GetWorld()->GetTimerManager().SetTimer(RightHeavyTimer, this, &ATest_PlayerController::ActionFinished, RightHeavyDuration, false);
+//		State = States::RightHeavy;
+//	}
+//}
 
 void ATest_PlayerController::ActionFinished()
 {

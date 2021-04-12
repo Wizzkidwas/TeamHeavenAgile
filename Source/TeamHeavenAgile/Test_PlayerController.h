@@ -68,6 +68,14 @@ private:
 	UPROPERTY()
 		float Health = HealthTotal;
 
+	UPROPERTY(EditAnywhere)
+		float StaminaTotal = 100.0f;
+	UPROPERTY()
+		float Stamina = StaminaTotal;
+
+	UPROPERTY(EditAnywhere)
+		float DodgeForce = 100.0f;
+
 	UPROPERTY()			    FTimerHandle DodgeTimer;
 	UPROPERTY(EditAnywhere) float DodgeDuration = 2.0f;
 	UPROPERTY()			    FTimerHandle DodgeActivateTimer;
