@@ -185,7 +185,7 @@ void ATest_PlayerController::ActionFinished()
 
 void ATest_PlayerController::StaminaRegen()
 {
-	if (State == States::Idle) {
+	if (State == States::Idle && Stamina != StaminaTotal) {
 		if ((Stamina + StaminaRegenStepAmount) <= StaminaTotal) Stamina += StaminaRegenStepAmount;
 		else Stamina = StaminaTotal;
 		GetWorld()->GetTimerManager().SetTimer(StaminaRegenTimer, this, &ATest_PlayerController::StaminaRegen, StaminaRegenDuration, false);
