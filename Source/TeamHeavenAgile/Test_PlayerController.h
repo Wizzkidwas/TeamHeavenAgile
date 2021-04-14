@@ -45,15 +45,13 @@ private:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	void ForwardMovement(float Value);
 	void SidewaysMovement(float Value);
-	void JumpCharacter();
 	void ActivateDodge();
 	void ActivateCrouch();
 	void CancelCrouch();
 	void LeftLightAttack();
 	void LeftHeavyAttack();
-	void RightLightAttack();
-	void RightHeavyAttack();
 	void ActionFinished();
+	void StaminaRegen();
 	void VacantTimeUp();
 	void PitchCamera(float AxisValue);
 	void YawCamera(float AxisValue);
@@ -62,6 +60,10 @@ private:
 		float GetHealth();
 	UFUNCTION(BlueprintPure)
 		float GetHealthTotal();
+	UFUNCTION(BlueprintPure)
+		float GetStamina();
+	UFUNCTION(BlueprintPure)
+		float GetStaminaTotal();
 
 	UPROPERTY(EditAnywhere)
 		float HealthTotal = 100.0f;
@@ -72,6 +74,13 @@ private:
 		float StaminaTotal = 100.0f;
 	UPROPERTY()
 		float Stamina = StaminaTotal;
+
+	UPROPERTY(EditAnywhere)
+		float DodgeStaminaCost = 40.0f;
+	UPROPERTY(EditAnywhere)
+		float LightStaminaCost = 20.0f;
+	UPROPERTY(EditAnywhere)
+		float HeavyStaminaCost = 40.0f;
 
 	UPROPERTY(EditAnywhere)
 		float DodgeForce = 100.0f;
@@ -88,6 +97,11 @@ private:
 	UPROPERTY(EditAnywhere) float RightLightDuration = 2.0f;
 	UPROPERTY()			    FTimerHandle RightHeavyTimer;
 	UPROPERTY(EditAnywhere) float RightHeavyDuration = 2.0f;
+	UPROPERTY()			    FTimerHandle StaminaRegenDelayTimer;
+	UPROPERTY(EditAnywhere) float StaminaRegenDelayDuration = 2.0f;
+	UPROPERTY()			    FTimerHandle StaminaRegenTimer;
+	UPROPERTY(EditAnywhere) float StaminaRegenDuration = 0.25f;
+	UPROPERTY(EditAnywhere) float StaminaRegenStepAmount = 5.0f;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> PlayerHUDClass;

@@ -112,11 +112,12 @@ void ATest_PlayerController::SidewaysMovement(float Value)
 void ATest_PlayerController::ActivateDodge()
 {
 	if (State == States::Idle) {
-		if (GetWorld()->GetTimerManager().IsTimerActive(DodgeActivateTimer)) {
+		if (GetWorld()->GetTimerManager().IsTimerActive(DodgeActivateTimer) && Stamina >= DodgeStaminaCost) {
 			if (PlayerCharacter) {
 				FVector DodgeVector = FVector(PlayerCharacter->GetActorForwardVector().X * DodgeForce, PlayerCharacter->GetActorForwardVector().Y * DodgeForce, 0.0f);
 				PlayerCharacter->LaunchCharacter(DodgeVector, true, false); //<-Need to swap FVector for current movement vector (i.e. rightback if s and d  pressed)
 			}
+			Stamina -= DodgeStaminaCost;
 			GetWorld()->GetTimerManager().SetTimer(DodgeTimer, this, &ATest_PlayerController::ActionFinished, DodgeDuration, false);
 			State = States::Dodge;
 		}
@@ -142,8 +143,8 @@ void ATest_PlayerController::CancelCrouch()
 
 void ATest_PlayerController::LeftLightAttack()
 {
-	if (State == States::Idle) {
-
+	if (State == States::Idle && Stamina >= LightStaminaCost) {
+		Stamina -= LightStaminaCost;
 		GetWorld()->GetTimerManager().SetTimer(LeftLightTimer, this, &ATest_PlayerController::ActionFinished, LeftLightDuration, false);
 		State = States::LeftLight;
 	}
@@ -151,8 +152,8 @@ void ATest_PlayerController::LeftLightAttack()
 
 void ATest_PlayerController::LeftHeavyAttack()
 {
-	if (State == States::Idle) {
-
+	if (State == States::Idle && Stamina >= HeavyStaminaCost) {
+		Stamina -= HeavyStaminaCost;
 		GetWorld()->GetTimerManager().SetTimer(LeftHeavyTimer, this, &ATest_PlayerController::ActionFinished, LeftHeavyDuration, false);
 		State = States::LeftHeavy;
 	}
@@ -179,6 +180,16 @@ void ATest_PlayerController::LeftHeavyAttack()
 void ATest_PlayerController::ActionFinished()
 {
 	State = States::Idle;
+	GetWorld()->GetTimerManager().SetTimer(StaminaRegenDelayTimer, this, &ATest_PlayerController::StaminaRegen, StaminaRegenDelayDuration, false);
+}
+
+void ATest_PlayerController::StaminaRegen()
+{
+	if (State == States::Idle) {
+		if ((Stamina + StaminaRegenStepAmount) <= StaminaTotal) Stamina += StaminaRegenStepAmount;
+		else Stamina = StaminaTotal;
+		GetWorld()->GetTimerManager().SetTimer(StaminaRegenTimer, this, &ATest_PlayerController::StaminaRegen, StaminaRegenDuration, false);
+	}
 }
 
 void ATest_PlayerController::VacantTimeUp()
@@ -203,4 +214,14 @@ float ATest_PlayerController::GetHealth()
 float ATest_PlayerController::GetHealthTotal()
 {
 	return HealthTotal;
+}
+
+float ATest_PlayerController::GetStamina()
+{
+	return Stamina;
+}
+
+float ATest_PlayerController::GetStaminaTotal()
+{
+	return StaminaTotal;
 }
