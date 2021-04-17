@@ -44,6 +44,6 @@ private:
 	UPROPERTY(EditAnywhere) TSubclassOf <ASlimeEnemy> SlimeClass;			//Blueprint used as a template to create Slime.
 	UPROPERTY(EditAnywhere) TSubclassOf <ATest_Character> PlayerClass;			//Blueprint used as a template to create Player.
 
-
+	
 	UPROPERTY() int EnemiesSpawnedCount = 0;
 };
