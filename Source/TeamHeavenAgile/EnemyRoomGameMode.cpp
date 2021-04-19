@@ -14,17 +14,24 @@ void AEnemyRoomGameMode::BeginPlay() {
 void AEnemyRoomGameMode::StartGame()
 {
 	//Grabs locations of spawns to feed to RoundBeginSpawning.
-	if (SlimeClass && PlayerClass) {
+	if (SlimeClass && PlayerClass && ChargerClass && SkeletonClass) {
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), Targets);
 		for (AActor* Waypoint : Targets) {
 			if (Waypoint->ActorHasTag(TEXT("SlimeSpawn"))) {
 				SlimeSpawns.Emplace(Waypoint);
+			}
+			else if (Waypoint->ActorHasTag(TEXT("ChargerSpawn"))) {
+				ChargerSpawns.Emplace(Waypoint);
+			}
+			else if (Waypoint->ActorHasTag(TEXT("SkeletonSpawn"))) {
+				SkeletonSpawns.Emplace(Waypoint);
 			}
 			else if (Waypoint->ActorHasTag(TEXT("PlayerSpawn"))) {
 				PlayerSpawn = Waypoint;
 			}
 		}
 		GameBeginSpawning();
+		NextId();
 	}
 }
 
@@ -38,7 +45,7 @@ void AEnemyRoomGameMode::GameBeginSpawning()
 			FRotator SpawnRotation = SpawnPoint->GetActorRotation();
 			ASlimeEnemy* TempEnemy = GetWorld()->SpawnActor<ASlimeEnemy>(SlimeClass, SpawnLocation, SpawnRotation);
 			tempId = EnemySpawned();
-			TempEnemy->Initialise(SlimeSize, tempId);
+			if (TempEnemy)TempEnemy->Initialise(SlimeSize, tempId);
 		}
 	}
 
@@ -48,7 +55,7 @@ void AEnemyRoomGameMode::GameBeginSpawning()
 			FRotator SpawnRotation = SpawnPoint->GetActorRotation();
 			AChargerEnemy* TempEnemy = GetWorld()->SpawnActor<AChargerEnemy>(ChargerClass, SpawnLocation, SpawnRotation);
 			tempId = EnemySpawned();
-			TempEnemy->Initialise(tempId);
+			if (TempEnemy)TempEnemy->Initialise(tempId);
 		}
 	}
 
@@ -58,7 +65,7 @@ void AEnemyRoomGameMode::GameBeginSpawning()
 			FRotator SpawnRotation = SpawnPoint->GetActorRotation();
 			ASkeletonEnemy* TempEnemy = GetWorld()->SpawnActor<ASkeletonEnemy>(SkeletonClass, SpawnLocation, SpawnRotation);
 			tempId = EnemySpawned();
-			TempEnemy->Initialise(tempId);
+			if (TempEnemy)TempEnemy->Initialise(tempId);
 		}
 	}
 	//Spawns Player in location specified.

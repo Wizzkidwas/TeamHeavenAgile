@@ -13,11 +13,11 @@ EBTNodeResult::Type UBTTask_CallNextID::ExecuteTask(UBehaviorTreeComponent& Owne
 		return EBTNodeResult::Failed;
 	}
 
-	if (UGameplayStatics::GetGameMode(GetWorld())->GetClass() == EnemyRoomGameModeRef->GetClass()) {
+	if (UGameplayStatics::GetGameMode(GetWorld())->GetClass()->IsChildOf(AEnemyRoomGameMode::StaticClass())){
 		EnemyRoomGameModeRef = Cast<AEnemyRoomGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		if(EnemyRoomGameModeRef) EnemyRoomGameModeRef->NextId();
 	}
-	/*else if (UGameplayStatics::GetGameMode(GetWorld())->GetClass() == WaveRoomGameModeRef->GetClass()) {
+	/*else if (UGameplayStatics::GetGameMode(GetWorld())->GetClass()->IsChildOf(AWaveRoomGameMode::StaticClass())){
 		WaveRoomGameModeRef = Cast<AWaveRoomGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 		if (WaveRoomGameModeRef) WaveRoomGameModeRef->NextId();
 	}*/

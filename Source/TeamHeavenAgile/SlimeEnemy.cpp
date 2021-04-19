@@ -18,15 +18,17 @@ ASlimeEnemy::ASlimeEnemy()
 	SlimeMesh->SetNotifyRigidBodyCollision(true);
 }
 
-void ASlimeEnemy::Initialise(int slimeSize, int EnemyId)
+void ASlimeEnemy::Initialise(int slimeSize = 3, int EnemyId = -1)
 {
-	EnemyID = EnemyId;
-	FString iD = FString::FromInt(EnemyID);
-	Tags.Emplace(FName(*iD));
-	SlimeSize = slimeSize;
-	CollisionMesh->SetRelativeScale3D(FVector(SlimeSize, SlimeSize, SlimeSize));
-	Damage = BaseDamage * SlimeSize;
-	Health = BaseHealth * SlimeSize;
+	if (EnemyId > -1) {
+		EnemyID = EnemyId;
+		FString iD = FString::FromInt(EnemyID);
+		Tags.Emplace(FName(*iD));
+		SlimeSize = slimeSize;
+		CollisionMesh->SetRelativeScale3D(FVector(SlimeSize, SlimeSize, SlimeSize));
+		Damage = BaseDamage * SlimeSize;
+		Health = BaseHealth * SlimeSize;
+	}
 }
 
 // Called when the game starts or when spawned

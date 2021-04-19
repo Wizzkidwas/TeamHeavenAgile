@@ -11,14 +11,15 @@ void UBTService_UpdateEnemyInPlay::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	int tempId = -1;
 	AActor* AIActor = OwnerComp.GetAIOwner()->GetPawn();
 	if (AIActor) {
-		if (UGameplayStatics::GetGameMode(GetWorld())->GetClass() == EnemyRoomGameModeRef->GetClass()) {
+		if (UGameplayStatics::GetGameMode(GetWorld())->GetClass()->IsChildOf(AEnemyRoomGameMode::StaticClass())) {
 			EnemyRoomGameModeRef = Cast<AEnemyRoomGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 			tempId = EnemyRoomGameModeRef->GetId();
 			FString iD = FString::FromInt(tempId);
+			UE_LOG(LogTemp, Warning, TEXT("CurrentEnemyInPlay is %s"), *iD);
 			if (AIActor->ActorHasTag(FName(*iD))) OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
 			else OwnerComp.GetBlackboardComponent()->ClearValue(GetSelectedBlackboardKey());
 		}
-		/*else if (UGameplayStatics::GetGameMode(GetWorld())->GetClass() == WaveRoomGameModeRef->GetClass()) {
+		/*else if (UGameplayStatics::GetGameMode(GetWorld())->GetClass()->IsChildOf(AWaveRoomGameMode::StaticClass())) {
 			WaveRoomGameModeRef = Cast<AWaveRoomGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 			tempId = WaveRoomGameModeRef->GetId();
 			FString iD = FString::FromInt(tempId);
