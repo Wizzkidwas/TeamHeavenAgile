@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere) USoundBase* Intense4;
 	UPROPERTY(EditAnywhere) USoundBase* Intense5;
 	UPROPERTY(EditAnywhere) USoundBase* BossMusic;
-
+	
 private:
 	UFUNCTION()
 		void ChooseMusic();
