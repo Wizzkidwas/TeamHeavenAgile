@@ -18,7 +18,7 @@ class TEAMHEAVENAGILE_API ASlimeEnemy : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ASlimeEnemy();
-	UFUNCTION() void Initialise(int slimeSize);
+	UFUNCTION() void Initialise(int slimeSize, int EnemyId);
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,4 +45,5 @@ private:
 	UPROPERTY(EditAnywhere) float BaseHealth = 20.0f;
 	UPROPERTY() float Health = BaseHealth * SlimeSize;
 	UPROPERTY() bool bHasHit = false;
+	UPROPERTY() int EnemyID = -1;
 };

@@ -18,8 +18,11 @@ ASlimeEnemy::ASlimeEnemy()
 	SlimeMesh->SetNotifyRigidBodyCollision(true);
 }
 
-void ASlimeEnemy::Initialise(int slimeSize)
+void ASlimeEnemy::Initialise(int slimeSize, int EnemyId)
 {
+	EnemyID = EnemyId;
+	FString iD = FString::FromInt(EnemyID);
+	Tags.Emplace(FName(*iD));
 	SlimeSize = slimeSize;
 	CollisionMesh->SetRelativeScale3D(FVector(SlimeSize, SlimeSize, SlimeSize));
 	Damage = BaseDamage * SlimeSize;
@@ -67,20 +70,21 @@ float ASlimeEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& Dam
 	if (Health <= 0) {
 		if (bEnableSpliting) {
 			if (SlimeSize > 1) {
+				int tempId = -1;
 				SlimeSize--;
 				ASlimeEnemy* SlimeTemp1 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X, GetActorLocation().Y + (SpawnOffset * SlimeSize), GetActorLocation().Z ), GetActorRotation());
 				if (SlimeTemp1) {
-					if(EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemySpawned();
-					SlimeTemp1->Initialise(SlimeSize);
+					if(EnemyRoomGameModeRef) tempId = EnemyRoomGameModeRef->EnemySpawned();
+					SlimeTemp1->Initialise(SlimeSize, tempId);
 				}
 				ASlimeEnemy* SlimeTemp2 = GetWorld()->SpawnActor<ASlimeEnemy>(slimeClass, FVector(GetActorLocation().X + (SpawnOffset * SlimeSize), GetActorLocation().Y, GetActorLocation().Z ), GetActorRotation());
 				if (SlimeTemp2) {
-					if (EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemySpawned();
-					SlimeTemp2->Initialise(SlimeSize);
+					if (EnemyRoomGameModeRef) tempId = EnemyRoomGameModeRef->EnemySpawned();
+					SlimeTemp2->Initialise(SlimeSize, tempId);
 				}
 			}
 		}
-		if (EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemyDefeated();
+		if (EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemyDefeated(EnemyID);
 		Destroy();
 	}
 	return DamageAmount;

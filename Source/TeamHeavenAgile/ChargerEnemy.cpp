@@ -13,6 +13,13 @@ AChargerEnemy::AChargerEnemy()
 
 }
 
+void AChargerEnemy::Initialise(int EnemyId)
+{
+	EnemyID = EnemyId;
+	FString iD = FString::FromInt(EnemyID);
+	Tags.Emplace(FName(*iD));
+}
+
 // Called when the game starts or when spawned
 void AChargerEnemy::BeginPlay()
 {
@@ -35,7 +42,7 @@ float AChargerEnemy::TakeDamage(float DamageAmount, struct FDamageEvent const& D
 
 	//Drops Ball and updates Game mode upon death. Also activates respawn timer.
 	if (Health <= 0) {
-		if (EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemyDefeated();
+		if (EnemyRoomGameModeRef) EnemyRoomGameModeRef->EnemyDefeated(EnemyID);
 		Destroy();
 	}
 	return DamageAmount;
