@@ -98,9 +98,11 @@ int AEnemyRoomGameMode::EnemySpawned() {
 
 void AEnemyRoomGameMode::NextId()
 {
-	if ((EnemiesInPlayIndex + 1) >= EnemiesInPlay.Num()) EnemiesInPlayIndex = 0;
-	else EnemiesInPlayIndex++;
-	CurrentTurn = EnemiesInPlay[EnemiesInPlayIndex];
+	if (EnemiesInPlay.Num() > 0) {
+		if ((EnemiesInPlayIndex + 1) >= EnemiesInPlay.Num()) EnemiesInPlayIndex = 0;
+		else EnemiesInPlayIndex++;
+		CurrentTurn = EnemiesInPlay[EnemiesInPlayIndex];
+	}
 }
 
 int AEnemyRoomGameMode::GetId()
