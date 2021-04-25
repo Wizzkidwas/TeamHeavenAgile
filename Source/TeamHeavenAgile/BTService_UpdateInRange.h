@@ -17,6 +17,5 @@ class TEAMHEAVENAGILE_API UBTService_UpdateInRange : public UBTService_Blackboar
 private:
 	UPROPERTY(EditAnywhere) float DistanceFromPlayerCutoff = 500.0f;
 protected:
-	//Checks Enemy can see Player to know if to shot Player or chase them.
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 };

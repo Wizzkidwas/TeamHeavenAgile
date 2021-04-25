@@ -17,6 +17,7 @@ class TEAMHEAVENAGILE_API ASkeletonEnemy : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ASkeletonEnemy();
+	UFUNCTION() void Initialise(int EnemyId);
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,4 +32,5 @@ private:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	UPROPERTY(EditAnywhere) float Health = 100.0f;
+	UPROPERTY() int EnemyID = -1;
 };
