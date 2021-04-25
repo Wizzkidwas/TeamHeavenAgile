@@ -58,23 +58,23 @@ void ABackgroundMusicController::PlayCalmMusic(int index)
 	switch (index)
 	{
 	case 1:
-		UGameplayStatics::PlaySound2D(GetWorld(), Calm1, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Calm1, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Calm 1 Song Played"));
 		break;
 	case 2:
-		UGameplayStatics::PlaySound2D(GetWorld(), Calm2, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Calm2, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Calm 2 Song Played"));
 		break;
 	case 3:
-		UGameplayStatics::PlaySound2D(GetWorld(), Calm3, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Calm3, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Calm 3 Song Played"));
 		break;
 	case 4:
-		UGameplayStatics::PlaySound2D(GetWorld(), Calm4, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Calm4, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Calm 4 Song Played"));
 		break;
 	case 5:
-		UGameplayStatics::PlaySound2D(GetWorld(), Calm5, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Calm5, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Calm 5 Song Played"));
 		break;
 	}
@@ -87,23 +87,23 @@ void ABackgroundMusicController::PlayMediumMusic(int index)
 	switch (index)
 	{
 	case 1:
-		UGameplayStatics::PlaySound2D(GetWorld(), Medium1, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Medium1, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Medium 1 Song Played"));
 		break;
 	case 2:
-		UGameplayStatics::PlaySound2D(GetWorld(), Medium2, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Medium2, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Medium 2 Song Played"));
 		break;
 	case 3:
-		UGameplayStatics::PlaySound2D(GetWorld(), Medium3, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Medium3, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Medium 3 Song Played"));
 		break;
 	case 4:
-		UGameplayStatics::PlaySound2D(GetWorld(), Medium4, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Medium4, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Medium 4 Song Played"));
 		break;
 	case 5:
-		UGameplayStatics::PlaySound2D(GetWorld(), Medium5, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Medium5, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Medium 5 Song Played"));
 		break;
 	}
@@ -116,23 +116,23 @@ void ABackgroundMusicController::PlayIntenseMusic(int index)
 	switch (index)
 	{
 	case 1:
-		UGameplayStatics::PlaySound2D(GetWorld(), Intense1, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Intense1, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Intense 1 Song Played"));
 		break;
 	case 2:
-		UGameplayStatics::PlaySound2D(GetWorld(), Intense2, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Intense2, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Intense 2 Song Played"));
 		break;
 	case 3:
-		UGameplayStatics::PlaySound2D(GetWorld(), Intense3, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Intense3, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Intense 3 Song Played"));
 		break;
 	case 4:
-		UGameplayStatics::PlaySound2D(GetWorld(), Intense4, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Intense4, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Intense 4 Song Played"));
 		break;
 	case 5:
-		UGameplayStatics::PlaySound2D(GetWorld(), Intense5, 1.0f, 1.0f, 0.0f);
+		UGameplayStatics::PlaySound2D(GetWorld(), Intense5, BGMVolume, 1.0f, 0.0f);
 		UE_LOG(LogTemp, Warning, TEXT("Intense 5 Song Played"));
 		break;
 	}
@@ -140,7 +140,7 @@ void ABackgroundMusicController::PlayIntenseMusic(int index)
 
 void ABackgroundMusicController::PlayBossMusic()
 {
-	UGameplayStatics::PlaySound2D(GetWorld(), BossMusic, 1.0f, 1.0f, 0.0f);
+	UGameplayStatics::PlaySound2D(GetWorld(), BossMusic, BGMVolume, 1.0f, 0.0f);
 	UE_LOG(LogTemp, Warning, TEXT("Boss Song Played"));
 }
 

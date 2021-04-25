@@ -32,6 +32,7 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("BeginPlayCalled"));
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShotSoundEffect, GetActorLocation(), ShotSoundVolume, 1.0f, 0.0f);
 	OnActorHit.AddDynamic(this, &ABullet::OnHit);
 }
 

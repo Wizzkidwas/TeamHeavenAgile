@@ -36,7 +36,8 @@ public:
 	UPROPERTY(EditAnywhere) USoundBase* Intense4;
 	UPROPERTY(EditAnywhere) USoundBase* Intense5;
 	UPROPERTY(EditAnywhere) USoundBase* BossMusic;
-	
+	UPROPERTY(EditAnywhere)
+		float BGMVolume = 0.6f;		// Volume of BGM
 private:
 	UFUNCTION()
 		void ChooseMusic();

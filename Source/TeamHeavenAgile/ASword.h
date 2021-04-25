@@ -35,4 +35,8 @@ private:
 	UPROPERTY(EditAnywhere) float heavyDamage = 40.0f;
 	UPROPERTY() TArray<AActor*> TempActorsHit;
 	UPROPERTY() ATest_PlayerController* characterRef;
+	UPROPERTY(EditAnywhere)
+		USoundBase* SwingSoundEffect;		//Sound played on swing.
+	UPROPERTY(EditAnywhere)
+		float SwingSoundVolume = 1.0f;		//Volume of sound played on swing.
 };

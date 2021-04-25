@@ -39,5 +39,8 @@ private:
 		float BaseDamage = 20.0f;											 //Damage Ball does when OnHit is triggered.
 	UPROPERTY(EditAnywhere)
 		float ForceSoundCutoffAmount = 0.5f;
-	
+	UPROPERTY(EditAnywhere)
+		USoundBase* ShotSoundEffect;		//Sound played on shot.
+	UPROPERTY(EditAnywhere)
+		float ShotSoundVolume = 1.0f;		//Volume of sound played on shot.
 };

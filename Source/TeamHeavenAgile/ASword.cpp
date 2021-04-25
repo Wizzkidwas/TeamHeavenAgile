@@ -41,17 +41,22 @@ void AASword::Tick(float DeltaTime)
 
 void AASword::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	characterRef = Cast<ATest_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (OtherActor->ActorHasTag("Hitable")) {
-		if (!TempActorsHit.Contains(OtherActor) || (TempActorsHit.Num() == 0)) {
-			TempActorsHit.Emplace(OtherActor);
-			UE_LOG(LogTemp, Warning, TEXT("Hit Made"));
-			if (characterRef->GetCurrentState() == States::LeftLight || characterRef->GetCurrentState() == States::RightLight) {
-				UGameplayStatics::ApplyDamage(OtherActor, lightDamage, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, UDamageType::StaticClass());
+	if (characterRef->GetCurrentState() != States::Idle)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Idle check worked"));
+		if (OtherActor->ActorHasTag("Hitable")) {
+			if (!TempActorsHit.Contains(OtherActor) || (TempActorsHit.Num() == 0)) {
+				TempActorsHit.Emplace(OtherActor);
+				UE_LOG(LogTemp, Warning, TEXT("Hit Made"));
+				UGameplayStatics::PlaySound2D(GetWorld(), SwingSoundEffect, SwingSoundVolume, 1.0f, 0.0f);
+				if (characterRef->GetCurrentState() == States::LeftLight || characterRef->GetCurrentState() == States::RightLight) {
+					UGameplayStatics::ApplyDamage(OtherActor, lightDamage, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, UDamageType::StaticClass());
+				}
+				else if (characterRef->GetCurrentState() == States::LeftHeavy || characterRef->GetCurrentState() == States::RightHeavy) {
+					UGameplayStatics::ApplyDamage(OtherActor, heavyDamage, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, UDamageType::StaticClass());
+				}
+				else UE_LOG(LogTemp, Warning, TEXT("SomethingsBroke"));
 			}
-			else if (characterRef->GetCurrentState() == States::LeftHeavy || characterRef->GetCurrentState() == States::RightHeavy) {
-				UGameplayStatics::ApplyDamage(OtherActor, heavyDamage, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, UDamageType::StaticClass());
-			}
-			else UE_LOG(LogTemp, Warning, TEXT("SomethingsBroke"));
 		}
 	}
 }
