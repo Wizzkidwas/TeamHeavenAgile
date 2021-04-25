@@ -16,7 +16,7 @@ void ATest_PlayerController::BeginPlay() {
 	PlayerCharacter = Cast<ATest_Character>(GetPawn());
 	//Sets health and ammo to Blueprinted amount and displays counters.
 	Health = HealthTotal;
-	Stamina = StaminaTotal;         
+	Stamina = StaminaTotal;
 	PlayerHUDCount = CreateWidget(this, PlayerHUDClass);
 	if (PlayerHUDCount) PlayerHUDCount->AddToViewport();
 }
@@ -53,7 +53,7 @@ void ATest_PlayerController::Tick(float DeltaTime)
 	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, message);
 }
 
-	void ATest_PlayerController::SetupInputComponent()
+void ATest_PlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	check(InputComponent);
@@ -96,12 +96,12 @@ float ATest_PlayerController::TakeDamage(float DamageAmount, FDamageEvent const&
 
 void ATest_PlayerController::ForwardMovement(float Value)
 {
-	if(PlayerCharacter) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector() * Value);
+	if (PlayerCharacter) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector() * Value);
 }
 
 void ATest_PlayerController::SidewaysMovement(float Value)
 {
-	if(PlayerCharacter) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector() * Value);
+	if (PlayerCharacter) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector() * Value);
 }
 
 //void ATest_PlayerController::JumpCharacter()
@@ -185,9 +185,18 @@ void ATest_PlayerController::ActionFinished()
 
 void ATest_PlayerController::StaminaRegen()
 {
-	if (State == States::Idle && Stamina != StaminaTotal) {
-		if ((Stamina + StaminaRegenStepAmount) <= StaminaTotal) Stamina += StaminaRegenStepAmount;
-		else Stamina = StaminaTotal;
+	if (State == States::Idle && Stamina != StaminaTotal)
+	{
+		if ((Stamina + StaminaRegenStepAmount) < StaminaTotal)
+		{
+			Stamina += StaminaRegenStepAmount;
+		}
+		else
+		{
+			Stamina = StaminaTotal;
+			UGameplayStatics::PlaySound2D(GetWorld(), HealSoundEffect, HealSoundVolume, 1.0f, 0.0f);
+			UE_LOG(LogTemp, Warning, TEXT("Stamina Sound Played"));
+		}
 		GetWorld()->GetTimerManager().SetTimer(StaminaRegenTimer, this, &ATest_PlayerController::StaminaRegen, StaminaRegenDuration, false);
 	}
 }
@@ -198,12 +207,12 @@ void ATest_PlayerController::VacantTimeUp()
 
 void ATest_PlayerController::PitchCamera(float AxisValue)
 {
-	if(PlayerCharacter) PlayerCharacter->AddControllerPitchInput(AxisValue);
+	if (PlayerCharacter) PlayerCharacter->AddControllerPitchInput(AxisValue);
 }
 
 void ATest_PlayerController::YawCamera(float AxisValue)
 {
-	if(PlayerCharacter) PlayerCharacter->AddControllerYawInput(AxisValue);
+	if (PlayerCharacter) PlayerCharacter->AddControllerYawInput(AxisValue);
 }
 
 float ATest_PlayerController::GetHealth()

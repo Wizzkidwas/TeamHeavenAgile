@@ -12,8 +12,8 @@ UCLASS()
 class TEAMHEAVENAGILE_API ABullet : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ABullet();
 
@@ -21,7 +21,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -39,5 +39,8 @@ private:
 		float BaseDamage = 20.0f;											 //Damage Ball does when OnHit is triggered.
 	UPROPERTY(EditAnywhere)
 		float ForceSoundCutoffAmount = 0.5f;
-	
+	UPROPERTY(EditAnywhere)
+		USoundBase* ShotSoundEffect;		//Sound played on shot.
+	UPROPERTY(EditAnywhere)
+		float ShotSoundVolume = 1.0f;		//Volume of sound played on shot.
 };
