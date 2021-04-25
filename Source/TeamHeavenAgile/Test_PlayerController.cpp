@@ -83,12 +83,8 @@ float ATest_PlayerController::TakeDamage(float DamageAmount, FDamageEvent const&
 
 	//Tells GameMode to begin Respawn timer while dropping any Ball held and finally destroying Player Character.
 	if (Health <= 0) {
-		/*GameModeRef->BeginPlayerRespawnProcess();
-		if (bBallHeld) {
-			PlayerCharacter->BallDropped();
-			GameModeRef->SetBallHeld(false);
-			bBallHeld = false;
-		}*/
+		GameInstanceRef = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (GameInstanceRef) GameInstanceRef->BeginPlayerRespawnProcess();
 		PlayerCharacter->Destroy();
 	}
 	return DamageAmount;
@@ -206,6 +202,12 @@ void ATest_PlayerController::YawCamera(float AxisValue)
 	if(PlayerCharacter) PlayerCharacter->AddControllerYawInput(AxisValue);
 }
 
+void ATest_PlayerController::RecastPlayerCharacter()
+{
+	//Regrabs new PlayerCharacter after respawn.
+	PlayerCharacter = Cast<ATest_Character>(GetPawn());
+}
+
 float ATest_PlayerController::GetHealth()
 {
 	return Health;
@@ -214,6 +216,11 @@ float ATest_PlayerController::GetHealth()
 float ATest_PlayerController::GetHealthTotal()
 {
 	return HealthTotal;
+}
+
+void ATest_PlayerController::ResetHealth()
+{
+	Health = HealthTotal;
 }
 
 float ATest_PlayerController::GetStamina()
