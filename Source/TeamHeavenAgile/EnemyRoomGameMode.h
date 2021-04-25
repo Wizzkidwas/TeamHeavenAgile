@@ -7,6 +7,7 @@
 #include "SlimeEnemy.h"
 #include "ChargerEnemy.h"
 #include "SkeletonEnemy.h"
+#include "BrawlerEnemy.h"
 #include "Test_Character.h"
 #include "ObjectiveLockedDoor.h"
 #include "EnemyRoomGameMode.generated.h"
@@ -58,6 +59,10 @@ private:
 	UPROPERTY() TArray<AActor*> TempSkeletonSpawns;		  //Stores positions and rotations of all Skeleton spawns within Level for flitering.
 	UPROPERTY() TArray<AActor*> SkeletonSpawns;			  //Position and Rotation for spawning Skeletons.
 	UPROPERTY(EditAnywhere) TSubclassOf <ASkeletonEnemy> SkeletonClass;			//Blueprint used as a template to create Skeleton.
+
+	UPROPERTY() TArray<AActor*> TempBrawlerSpawns;		  //Stores positions and rotations of all Brawler spawns within Level for flitering.
+	UPROPERTY() TArray<AActor*> BrawlerSpawns;			  //Position and Rotation for spawning Brawlers.
+	UPROPERTY(EditAnywhere) TSubclassOf <ABrawlerEnemy> BrawlerClass;			//Blueprint used as a template to create Brawler.
 
 	UPROPERTY(EditAnywhere) TSubclassOf <ATest_Character> PlayerClass;			//Blueprint used as a template to create Player.
 	UPROPERTY() TArray<int> EnemiesInPlay;

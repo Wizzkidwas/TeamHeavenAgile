@@ -14,7 +14,7 @@ void AEnemyRoomGameMode::BeginPlay() {
 void AEnemyRoomGameMode::StartGame()
 {
 	//Grabs locations of spawns to feed to RoundBeginSpawning.
-	if (SlimeClass && PlayerClass && ChargerClass && SkeletonClass) {
+	if (SlimeClass && PlayerClass && ChargerClass && SkeletonClass && BrawlerClass) {
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), Targets);
 		for (AActor* Waypoint : Targets) {
 			if (Waypoint->ActorHasTag(TEXT("SlimeSpawn"))) {
@@ -25,6 +25,9 @@ void AEnemyRoomGameMode::StartGame()
 			}
 			else if (Waypoint->ActorHasTag(TEXT("SkeletonSpawn"))) {
 				SkeletonSpawns.Emplace(Waypoint);
+			}
+			else if (Waypoint->ActorHasTag(TEXT("BrawlerSpawn"))) {
+				BrawlerSpawns.Emplace(Waypoint);
 			}
 			else if (Waypoint->ActorHasTag(TEXT("PlayerSpawn"))) {
 				PlayerSpawn = Waypoint;
@@ -68,6 +71,17 @@ void AEnemyRoomGameMode::GameBeginSpawning()
 			if (TempEnemy)TempEnemy->Initialise(tempId);
 		}
 	}
+
+	if (BrawlerSpawns.Num() != 0 && BrawlerClass) {
+		for (AActor* SpawnPoint : BrawlerSpawns) {
+			FVector SpawnLocation = SpawnPoint->GetActorLocation();
+			FRotator SpawnRotation = SpawnPoint->GetActorRotation();
+			ABrawlerEnemy* TempEnemy = GetWorld()->SpawnActor<ABrawlerEnemy>(BrawlerClass, SpawnLocation, SpawnRotation);
+			tempId = EnemySpawned();
+			if (TempEnemy)TempEnemy->Initialise(tempId);
+		}
+	}
+
 	//Spawns Player in location specified.
 	if (PlayerSpawn && PlayerClass) {
 		FVector SpawnLocation = PlayerSpawn->GetActorLocation();
