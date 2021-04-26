@@ -13,6 +13,7 @@ void AEnemyRoomGameMode::BeginPlay() {
 
 void AEnemyRoomGameMode::StartGame()
 {
+	PlayerControllerRef = Cast<ATest_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	//Grabs locations of spawns to feed to RoundBeginSpawning.
 	if (SlimeClass && PlayerClass && ChargerClass && SkeletonClass && BrawlerClass) {
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), Targets);
@@ -122,6 +123,17 @@ void AEnemyRoomGameMode::NextId()
 int AEnemyRoomGameMode::GetId()
 {
 	return CurrentTurn;
+}
+
+void AEnemyRoomGameMode::RespawnPlayer()
+{
+	//Spawns Player in original location and Resets health.
+	FVector SpawnLocation = PlayerSpawn->GetActorLocation();
+	FRotator SpawnRotation = PlayerSpawn->GetActorRotation();
+	ATest_Character* TempPlayer = GetWorld()->SpawnActor<ATest_Character>(PlayerClass, SpawnLocation, SpawnRotation);
+	PlayerControllerRef->RecastPlayerCharacter();
+	PlayerControllerRef->ResetHealth();
+	TempPlayer->SetOwner(this);
 }
 
 void AEnemyRoomGameMode::AllEnemiesDefeated()
