@@ -4,6 +4,7 @@
 #include "EnemyRoomGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "ObjectiveLockedDoor.h"
+#include "Math/UnrealMathUtility.h"
 #include "Engine/TargetPoint.h"
 
 void AEnemyRoomGameMode::BeginPlay() {
@@ -128,3 +129,4 @@ void AEnemyRoomGameMode::AllEnemiesDefeated()
 {
 	LockedDoor->Destroy();
 }
+
