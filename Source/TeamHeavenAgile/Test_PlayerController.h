@@ -10,7 +10,7 @@
 #include "Test_PlayerController.generated.h"
 
 /**
- * 
+ *
  */
 
 UENUM()
@@ -111,7 +111,10 @@ private:
 	UPROPERTY()			    FTimerHandle StaminaRegenTimer;
 	UPROPERTY(EditAnywhere) float StaminaRegenDuration = 0.25f;
 	UPROPERTY(EditAnywhere) float StaminaRegenStepAmount = 5.0f;
-
+	UPROPERTY(EditAnywhere)
+		USoundBase* HealSoundEffect;		//Sound played when healing.
+	UPROPERTY(EditAnywhere)
+		float HealSoundVolume = 1.0f;		//Volume of sound played when healing.
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> PlayerHUDClass;
 	UPROPERTY() UUserWidget* PlayerHUDCount;
