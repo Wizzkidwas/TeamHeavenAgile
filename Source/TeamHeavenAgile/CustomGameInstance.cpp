@@ -90,14 +90,24 @@ void UCustomGameInstance::PlayerRespawnTimeUp()
 	}
 }
 
-int UCustomGameInstance::GetMusicVolume()
+float UCustomGameInstance::GetMusicVolume()
 {
 	return MusicVolume;
 }
 
-int UCustomGameInstance::GetSoundVolume()
+void UCustomGameInstance::SetMusicVolume(float NewVolume)
+{
+	MusicVolume = NewVolume;
+}
+
+float UCustomGameInstance::GetSoundVolume()
 {
 	return SoundVolume;
+}
+
+void UCustomGameInstance::SetSoundVolume(float NewVolume)
+{
+	SoundVolume = NewVolume;
 }
 
 int UCustomGameInstance::GetCurrentRound()
