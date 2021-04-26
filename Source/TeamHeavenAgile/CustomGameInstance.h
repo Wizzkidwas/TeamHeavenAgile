@@ -21,7 +21,7 @@ public:
 	UFUNCTION(Exec)
 		void ConsoleTestParams(const FString MyString);
 
-	UFUNCTION(Exec)
+	UFUNCTION(Exec, BlueprintCallable)
 		void LoadNextLevel();
 	UFUNCTION(Exec)
 		int SelectRandomLevel();
@@ -38,9 +38,13 @@ public:
 		void PlayerRespawnTimeUp();
 
 	UFUNCTION(BlueprintPure)
-		int GetMusicVolume();
+		float GetMusicVolume();
+	UFUNCTION(BlueprintCallable)
+		void SetMusicVolume(float NewVolume);
 	UFUNCTION(BlueprintPure)
-		int GetSoundVolume();
+		float GetSoundVolume();
+	UFUNCTION(BlueprintCallable)
+		void SetSoundVolume(float NewVolume);
 	
 	UFUNCTION(BlueprintPure)
 		int GetCurrentRound();
@@ -55,7 +59,7 @@ private:
 	UPROPERTY(EditAnywhere) 
 		float PlayerRespawnDuration = 3.0f;				//Adjustable time it takes to respawn player.
 	UPROPERTY() 
-		FTimerHandle PlayerRespawnTimer;								//Handle for player respawn timer.
+		FTimerHandle PlayerRespawnTimer;				//Handle for player respawn timer.
 
 	UPROPERTY()
 		int CurrentRound = 0;
@@ -67,9 +71,9 @@ private:
 		TArray<int> LevelPickArray;
 
 	UPROPERTY()
-		int MusicVolume = 100;
+		float MusicVolume = 1.0f;
 	UPROPERTY()
-		int SoundVolume = 100;
+		float SoundVolume = 1.0f;
 
 	UPROPERTY(EditAnywhere)
 		FName EndScreenLevel;
