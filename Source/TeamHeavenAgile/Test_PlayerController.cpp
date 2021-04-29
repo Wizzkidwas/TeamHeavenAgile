@@ -11,6 +11,8 @@
 void ATest_PlayerController::BeginPlay() {
 	Super::BeginPlay();
 
+	MainMenuCount = CreateWidget(GetWorld(), MainMenuClass);
+
 	PrimaryActorTick.bCanEverTick = true;
 	//Obtains Player character and a reference to AGameDev1AssGameModeBase.
 	PlayerCharacter = Cast<ATest_Character>(GetPawn());
@@ -67,6 +69,7 @@ void ATest_PlayerController::SetupInputComponent()
 	InputComponent->BindAction("Dodge", IE_Pressed, this, &ATest_PlayerController::ActivateDodge);
 	InputComponent->BindAction("Crouch", IE_Pressed, this, &ATest_PlayerController::ActivateCrouch);
 	InputComponent->BindAction("Crouch", IE_Released, this, &ATest_PlayerController::CancelCrouch);
+	InputComponent->BindAction("Menu", IE_Pressed, this, &ATest_PlayerController::Menu);
 	//InputComponent->BindAction("LeftHeavyAttack", IE_Pressed, this, &ATest_PlayerController::LeftHeavyAttack);
 	//InputComponent->BindAction("RightHeavyAttack", IE_Pressed, this, &ATest_PlayerController::RightHeavyAttack);
 
@@ -83,12 +86,8 @@ float ATest_PlayerController::TakeDamage(float DamageAmount, FDamageEvent const&
 
 	//Tells GameMode to begin Respawn timer while dropping any Ball held and finally destroying Player Character.
 	if (Health <= 0) {
-		/*GameModeRef->BeginPlayerRespawnProcess();
-		if (bBallHeld) {
-			PlayerCharacter->BallDropped();
-			GameModeRef->SetBallHeld(false);
-			bBallHeld = false;
-		}*/
+		GameInstanceRef = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (GameInstanceRef) GameInstanceRef->BeginPlayerRespawnProcess();
 		PlayerCharacter->Destroy();
 	}
 	return DamageAmount;
@@ -96,12 +95,12 @@ float ATest_PlayerController::TakeDamage(float DamageAmount, FDamageEvent const&
 
 void ATest_PlayerController::ForwardMovement(float Value)
 {
-	if (PlayerCharacter) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector() * Value);
+	if (PlayerCharacter && MenuNotOpened) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector() * Value);
 }
 
 void ATest_PlayerController::SidewaysMovement(float Value)
 {
-	if (PlayerCharacter) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector() * Value);
+	if (PlayerCharacter && MenuNotOpened) PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector() * Value);
 }
 
 //void ATest_PlayerController::JumpCharacter()
@@ -111,7 +110,7 @@ void ATest_PlayerController::SidewaysMovement(float Value)
 
 void ATest_PlayerController::ActivateDodge()
 {
-	if (State == States::Idle) {
+	if (State == States::Idle && MenuNotOpened) {
 		if (GetWorld()->GetTimerManager().IsTimerActive(DodgeActivateTimer) && Stamina >= DodgeStaminaCost) {
 			if (PlayerCharacter) {
 				FVector DodgeVector = FVector(PlayerCharacter->GetActorForwardVector().X * DodgeForce, PlayerCharacter->GetActorForwardVector().Y * DodgeForce, 0.0f);
@@ -121,7 +120,7 @@ void ATest_PlayerController::ActivateDodge()
 			GetWorld()->GetTimerManager().SetTimer(DodgeTimer, this, &ATest_PlayerController::ActionFinished, DodgeDuration, false);
 			State = States::Dodge;
 		}
-		else {
+		else if (MenuNotOpened) {
 			GetWorld()->GetTimerManager().SetTimer(DodgeActivateTimer, this, &ATest_PlayerController::VacantTimeUp, DodgeActivateDuration, false);
 		}
 	}
@@ -129,21 +128,21 @@ void ATest_PlayerController::ActivateDodge()
 
 void ATest_PlayerController::ActivateCrouch()
 {
-	if (State == States::Idle && PlayerCharacter->CanCrouch()) {
+	if (State == States::Idle && PlayerCharacter->CanCrouch() && MenuNotOpened) {
 		PlayerCharacter->Crouch();
 	}
 }
 
 void ATest_PlayerController::CancelCrouch()
 {
-	if (State == States::Idle) {
+	if (State == States::Idle && MenuNotOpened) {
 		PlayerCharacter->UnCrouch();
 	}
 }
 
 void ATest_PlayerController::LeftLightAttack()
 {
-	if (State == States::Idle && Stamina >= LightStaminaCost) {
+	if (State == States::Idle && Stamina >= LightStaminaCost && MenuNotOpened) {
 		Stamina -= LightStaminaCost;
 		GetWorld()->GetTimerManager().SetTimer(LeftLightTimer, this, &ATest_PlayerController::ActionFinished, LeftLightDuration, false);
 		State = States::LeftLight;
@@ -152,10 +151,37 @@ void ATest_PlayerController::LeftLightAttack()
 
 void ATest_PlayerController::LeftHeavyAttack()
 {
-	if (State == States::Idle && Stamina >= HeavyStaminaCost) {
+	if (State == States::Idle && Stamina >= HeavyStaminaCost && MenuNotOpened) {
 		Stamina -= HeavyStaminaCost;
 		GetWorld()->GetTimerManager().SetTimer(LeftHeavyTimer, this, &ATest_PlayerController::ActionFinished, LeftHeavyDuration, false);
 		State = States::LeftHeavy;
+	}
+}
+
+void ATest_PlayerController::Menu()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Menu called"));
+
+	MenuNotOpened = !MenuNotOpened;
+	bShowMouseCursor = !MenuNotOpened;
+	bEnableClickEvents = !MenuNotOpened;
+	bEnableMouseOverEvents = !MenuNotOpened;
+	if (MainMenuCount) {
+		UE_LOG(LogTemp, Warning, TEXT("Menu Count Exists"));
+		GameInstanceRef = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (GameInstanceRef) {
+			if (MenuNotOpened && MainMenuCount->IsInViewport()) {
+				UE_LOG(LogTemp, Warning, TEXT("Menu visible and Menu Not opened"));
+				MainMenuCount->RemoveFromViewport();
+				GameInstanceRef->SetPaused(false);
+			}
+			else if (!MenuNotOpened && !(MainMenuCount->IsInViewport())) {
+				UE_LOG(LogTemp, Warning, TEXT("Menu not visible and menu opened"));
+				MainMenuCount->AddToViewport();
+				GameInstanceRef->SetPaused(true);
+				State = States::Idle;
+			}
+		}
 	}
 }
 
@@ -185,7 +211,7 @@ void ATest_PlayerController::ActionFinished()
 
 void ATest_PlayerController::StaminaRegen()
 {
-	if (State == States::Idle && Stamina != StaminaTotal)
+	if (State == States::Idle && Stamina != StaminaTotal && MenuNotOpened)
 	{
 		if ((Stamina + StaminaRegenStepAmount) < StaminaTotal)
 		{
@@ -207,12 +233,23 @@ void ATest_PlayerController::VacantTimeUp()
 
 void ATest_PlayerController::PitchCamera(float AxisValue)
 {
-	if (PlayerCharacter) PlayerCharacter->AddControllerPitchInput(AxisValue);
+	if (PlayerCharacter && MenuNotOpened) PlayerCharacter->AddControllerPitchInput(AxisValue);
 }
 
 void ATest_PlayerController::YawCamera(float AxisValue)
 {
-	if (PlayerCharacter) PlayerCharacter->AddControllerYawInput(AxisValue);
+	if (PlayerCharacter && MenuNotOpened) PlayerCharacter->AddControllerYawInput(AxisValue);
+}
+
+void ATest_PlayerController::ResumeGameButtonPressed()
+{
+	Menu();
+}
+
+void ATest_PlayerController::RecastPlayerCharacter()
+{
+	//Regrabs new PlayerCharacter after respawn.
+	PlayerCharacter = Cast<ATest_Character>(GetPawn());
 }
 
 float ATest_PlayerController::GetHealth()
@@ -223,6 +260,11 @@ float ATest_PlayerController::GetHealth()
 float ATest_PlayerController::GetHealthTotal()
 {
 	return HealthTotal;
+}
+
+void ATest_PlayerController::ResetHealth()
+{
+	Health = HealthTotal;
 }
 
 float ATest_PlayerController::GetStamina()

@@ -9,6 +9,7 @@
 #include "SkeletonEnemy.h"
 #include "BrawlerEnemy.h"
 #include "Test_Character.h"
+#include "Test_PlayerController.h"
 #include "ObjectiveLockedDoor.h"
 #include "EnemyRoomGameMode.generated.h"
 
@@ -29,7 +30,8 @@ public:
 		void NextId();
 	UFUNCTION()
 		int GetId();
-
+	UFUNCTION()
+		void RespawnPlayer();
 	UPROPERTY(EditAnywhere)
 		AObjectiveLockedDoor* LockedDoor;
 protected:
@@ -65,6 +67,7 @@ private:
 	UPROPERTY(EditAnywhere) TSubclassOf <ABrawlerEnemy> BrawlerClass;			//Blueprint used as a template to create Brawler.
 
 	UPROPERTY(EditAnywhere) TSubclassOf <ATest_Character> PlayerClass;			//Blueprint used as a template to create Player.
+	UPROPERTY() ATest_PlayerController* PlayerControllerRef;
 	UPROPERTY() TArray<int> EnemiesInPlay;
 	UPROPERTY() int CurrentTurn = -1;
 	UPROPERTY() int EnemySpawnId = -1;
