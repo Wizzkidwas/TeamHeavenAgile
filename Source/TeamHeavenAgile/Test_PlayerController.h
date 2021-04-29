@@ -58,12 +58,22 @@ private:
 	void CancelCrouch();
 	void LeftLightAttack();
 	void LeftHeavyAttack();
+	void Menu();
 	void ActionFinished();
 	void StaminaRegen();
 	void VacantTimeUp();
 	void PitchCamera(float AxisValue);
 	void YawCamera(float AxisValue);
 
+	UFUNCTION(BlueprintCallable)
+		void ResumeGameButtonPressed();
+
+	UPROPERTY()
+		bool MenuNotOpened = true;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> MainMenuClass;						//Blueprint to create and attach Main Menu UI to viewport.
+	UPROPERTY()
+		UUserWidget* MainMenuCount;									//Monitors UI from Inception and is used as an interface to the UI.
 
 	UFUNCTION(BlueprintPure)
 		float GetHealth();

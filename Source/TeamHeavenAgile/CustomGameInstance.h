@@ -51,7 +51,15 @@ public:
 	UFUNCTION(BlueprintPure)
 		int GetPlayerCurrentLives();
 
+	UFUNCTION(BlueprintCallable)
+		bool GetPaused();
+	UFUNCTION(BlueprintCallable)
+		void SetPaused(bool isPaused);
+
 private:
+	UPROPERTY()
+		bool Paused = false;
+
 	UPROPERTY(EditAnywhere)
 		int PlayersTotalLives = 3;
 	UPROPERTY()

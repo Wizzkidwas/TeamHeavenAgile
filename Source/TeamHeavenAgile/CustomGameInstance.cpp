@@ -119,3 +119,13 @@ int UCustomGameInstance::GetPlayerCurrentLives()
 {
 	return PlayersCurrentLives;
 }
+
+bool UCustomGameInstance::GetPaused()
+{
+	return Paused;
+}
+
+void UCustomGameInstance::SetPaused(bool isPaused)
+{
+	Paused = isPaused;
+}

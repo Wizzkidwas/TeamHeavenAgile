@@ -32,9 +32,11 @@ void AASword::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	characterRef = Cast<ATest_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (characterRef->GetCurrentState() == States::Idle) {
-		if (TempActorsHit.Num() != 0) {
-			TempActorsHit.Empty();
+	if (characterRef) {
+		if (characterRef->GetCurrentState() == States::Idle) {
+			if (TempActorsHit.Num() != 0) {
+				TempActorsHit.Empty();
+			}
 		}
 	}
 }
