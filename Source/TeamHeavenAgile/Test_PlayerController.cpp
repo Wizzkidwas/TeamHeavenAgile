@@ -21,6 +21,7 @@ void ATest_PlayerController::BeginPlay() {
 	Stamina = StaminaTotal;
 	PlayerHUDCount = CreateWidget(this, PlayerHUDClass);
 	if (PlayerHUDCount) PlayerHUDCount->AddToViewport();
+	GetVolume();
 }
 
 
@@ -239,6 +240,11 @@ void ATest_PlayerController::PitchCamera(float AxisValue)
 void ATest_PlayerController::YawCamera(float AxisValue)
 {
 	if (PlayerCharacter && MenuNotOpened) PlayerCharacter->AddControllerYawInput(AxisValue);
+}
+
+void ATest_PlayerController::GetVolume()
+{
+	HealSoundVolume = GameInstanceRef->GetSoundVolume();
 }
 
 void ATest_PlayerController::ResumeGameButtonPressed()

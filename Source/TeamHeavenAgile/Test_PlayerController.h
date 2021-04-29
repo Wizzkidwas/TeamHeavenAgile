@@ -64,6 +64,8 @@ private:
 	void VacantTimeUp();
 	void PitchCamera(float AxisValue);
 	void YawCamera(float AxisValue);
+	UFUNCTION()
+		void GetVolume();
 
 	UFUNCTION(BlueprintCallable)
 		void ResumeGameButtonPressed();

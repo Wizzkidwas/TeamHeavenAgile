@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "CustomGameInstance.h"
 #include "Bullet.generated.h"
 
 class UProjectileMovementComponent;
@@ -20,6 +21,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY()
+		UCustomGameInstance* GameInstanceRef;
 
 public:
 	// Called every frame
@@ -28,7 +31,8 @@ public:
 private:
 	//Upon hit plays sound and applies damage if above certain force.
 	UFUNCTION() void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
-
+	UFUNCTION()
+		void GetVolume();
 	UPROPERTY(EditAnywhere)
 		float MovementSpeed = 2500.0f;										 //Used to set speed Ball spawns with and can achieve.
 	UPROPERTY(EditAnywhere)

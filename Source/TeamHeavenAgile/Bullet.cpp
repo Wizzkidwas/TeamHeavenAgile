@@ -32,6 +32,7 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("BeginPlayCalled"));
+	GetVolume();
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShotSoundEffect, GetActorLocation(), ShotSoundVolume, 1.0f, 0.0f);
 	OnActorHit.AddDynamic(this, &ABullet::OnHit);
 }
@@ -41,6 +42,11 @@ void ABullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABullet::GetVolume()
+{
+	ShotSoundVolume = GameInstanceRef->GetSoundVolume();
 }
 
 void ABullet::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {

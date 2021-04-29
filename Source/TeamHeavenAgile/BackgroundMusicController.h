@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "CustomGameInstance.h"
 #include "BackgroundMusicController.generated.h"
 
 UCLASS()
@@ -18,6 +19,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY()
+		UCustomGameInstance* GameInstanceRef;
 
 public:	
 	UPROPERTY(EditAnywhere) USoundBase* Calm1;
@@ -37,10 +40,13 @@ public:
 	UPROPERTY(EditAnywhere) USoundBase* Intense5;
 	UPROPERTY(EditAnywhere) USoundBase* BossMusic;
 	UPROPERTY(EditAnywhere)
-		float BGMVolume = 0.6f;		// Volume of BGM
+		float BGMVolume = 1.0f;		// Volume of BGM
 private:
 	UFUNCTION()
 		void ChooseMusic();
+
+	UFUNCTION()
+		void GetVolume();
 
 	UFUNCTION()
 		void PlayCalmMusic(int index);

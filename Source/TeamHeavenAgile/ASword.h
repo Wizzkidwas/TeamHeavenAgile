@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/CapsuleComponent.h"
 #include "AMelee.h"
+#include "CustomGameInstance.h"
 #include "ASword.generated.h"
 
 class ATest_PlayerController;
@@ -22,6 +23,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY()
+		UCustomGameInstance* GameInstanceRef;
 
 public:
 	// Called every frame
@@ -29,6 +32,8 @@ public:
 	UFUNCTION() void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
+	UFUNCTION()
+		void GetVolume();
 	UPROPERTY(EditAnywhere) USkeletalMeshComponent* SwordMesh;
 	UPROPERTY(EditAnywhere) UCapsuleComponent* collisionCollider;
 	UPROPERTY(EditAnywhere) float lightDamage = 15.0f;

@@ -18,6 +18,7 @@ void ABackgroundMusicController::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("MusicBeginPlayCalled"));
+	GetVolume();
 	ChooseMusic();
 }
 
@@ -49,6 +50,11 @@ void ABackgroundMusicController::ChooseMusic()
 			break;
 		}
 	}
+}
+
+void ABackgroundMusicController::GetVolume()
+{
+	BGMVolume = GameInstanceRef->GetMusicVolume();
 }
 
 // Given the random index, plays the corresponding calm song
