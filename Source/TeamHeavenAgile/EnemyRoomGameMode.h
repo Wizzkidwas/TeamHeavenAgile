@@ -11,6 +11,7 @@
 #include "Test_Character.h"
 #include "Test_PlayerController.h"
 #include "ObjectiveLockedDoor.h"
+#include "CustomGameInstance.h"
 #include "EnemyRoomGameMode.generated.h"
 
 /**
@@ -74,4 +75,6 @@ private:
 	UPROPERTY() int EnemiesInPlayIndex = -1;
 
 	UPROPERTY() int EnemiesSpawnedCount = 0;
+
+	UPROPERTY() UCustomGameInstance* GameInstanceRef;
 };

@@ -142,5 +142,7 @@ void AEnemyRoomGameMode::RespawnPlayer()
 void AEnemyRoomGameMode::AllEnemiesDefeated()
 {
 	LockedDoor->Destroy();
+	GameInstanceRef = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (GameInstanceRef) GameInstanceRef->LoadNextLevel();
 }
 
