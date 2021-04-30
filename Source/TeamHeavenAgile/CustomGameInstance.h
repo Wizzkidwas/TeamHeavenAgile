@@ -74,7 +74,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		int RoundsTillBossOption = 5;
 	UPROPERTY()
-		int TotalPickableLevelAmount = 2;
+		int TotalPickableLevelAmount = 3;
 	UPROPERTY()
 		TArray<int> LevelPickArray;
 
@@ -103,4 +103,8 @@ private:
 		FName PitLevel;
 	UPROPERTY(EditAnywhere)
 		int PitLevelNum = 1;
+	UPROPERTY(EditAnywhere)
+		FName CageLevel;
+	UPROPERTY(EditAnywhere)
+		int CageLevelNum = 2;
 };

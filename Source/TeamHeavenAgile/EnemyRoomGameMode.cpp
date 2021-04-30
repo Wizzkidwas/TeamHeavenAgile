@@ -129,12 +129,14 @@ int AEnemyRoomGameMode::GetId()
 void AEnemyRoomGameMode::RespawnPlayer()
 {
 	//Spawns Player in original location and Resets health.
-	FVector SpawnLocation = PlayerSpawn->GetActorLocation();
-	FRotator SpawnRotation = PlayerSpawn->GetActorRotation();
-	ATest_Character* TempPlayer = GetWorld()->SpawnActor<ATest_Character>(PlayerClass, SpawnLocation, SpawnRotation);
-	PlayerControllerRef->RecastPlayerCharacter();
-	PlayerControllerRef->ResetHealth();
-	TempPlayer->SetOwner(this);
+	if (PlayerSpawn) {
+		FVector SpawnLocation = PlayerSpawn->GetActorLocation();
+		FRotator SpawnRotation = PlayerSpawn->GetActorRotation();
+		ATest_Character* TempPlayer = GetWorld()->SpawnActor<ATest_Character>(PlayerClass, SpawnLocation, SpawnRotation);
+		PlayerControllerRef->RecastPlayerCharacter();
+		PlayerControllerRef->ResetHealth();
+		TempPlayer->SetOwner(this);
+	}
 }
 
 void AEnemyRoomGameMode::AllEnemiesDefeated()

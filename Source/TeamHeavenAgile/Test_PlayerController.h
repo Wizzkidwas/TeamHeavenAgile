@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "Test_Character.h"
+#include "ASword.h"
 #include "CustomGameInstance.h"
 #include "Math/UnrealMathUtility.h"
 #include "Test_PlayerController.generated.h"
@@ -48,7 +49,8 @@ public:
 		void ResetHealth();
 	UFUNCTION()
 		void RecastPlayerCharacter();
-
+	UFUNCTION()
+		void UpdateSwordRef(AASword* newRef);
 private:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	void ForwardMovement(float Value);
@@ -93,6 +95,9 @@ private:
 		float StaminaTotal = 100.0f;
 	UPROPERTY()
 		float Stamina = StaminaTotal;
+
+	UPROPERTY()
+		AASword* SwordRef;
 
 	UPROPERTY(EditAnywhere)
 		float DodgeStaminaCost = 40.0f;

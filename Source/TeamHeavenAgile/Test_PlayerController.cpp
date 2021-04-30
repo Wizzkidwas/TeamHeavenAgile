@@ -87,8 +87,12 @@ float ATest_PlayerController::TakeDamage(float DamageAmount, FDamageEvent const&
 	//Tells GameMode to begin Respawn timer while dropping any Ball held and finally destroying Player Character.
 	if (Health <= 0) {
 		GameInstanceRef = Cast<UCustomGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		if (GameInstanceRef) GameInstanceRef->BeginPlayerRespawnProcess();
+		if (GameInstanceRef) GameInstanceRef->PlayerDied();
 		PlayerCharacter->Destroy();
+		if (SwordRef) {
+			SwordRef->Destroy();
+			SwordRef = nullptr;
+		}
 	}
 	return DamageAmount;
 }
@@ -275,4 +279,9 @@ float ATest_PlayerController::GetStamina()
 float ATest_PlayerController::GetStaminaTotal()
 {
 	return StaminaTotal;
+}
+
+void ATest_PlayerController::UpdateSwordRef(AASword* newRef)
+{
+	SwordRef = newRef;
 }
