@@ -3,21 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BrawlerEnemy.h"
 #include "BehaviorTree/Tasks/BTTask_GameplayTaskBase.h"
-#include "BTTask_Swipe.generated.h"
+#include "ChargerEnemy.h"
+#include "BTTask_Charge.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TEAMHEAVENAGILE_API UBTTask_Swipe : public UBTTask_GameplayTaskBase
+class TEAMHEAVENAGILE_API UBTTask_Charge : public UBTTask_GameplayTaskBase
 {
 	GENERATED_BODY()
-	
+
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 private:
-	ABrawlerEnemy* BrawlerRef;
+	AChargerEnemy* ChargerRef;
 };

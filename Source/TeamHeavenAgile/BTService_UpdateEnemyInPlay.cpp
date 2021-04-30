@@ -15,7 +15,7 @@ void UBTService_UpdateEnemyInPlay::TickNode(UBehaviorTreeComponent& OwnerComp, u
 			EnemyRoomGameModeRef = Cast<AEnemyRoomGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 			tempId = EnemyRoomGameModeRef->GetId();
 			FString iD = FString::FromInt(tempId);
-			UE_LOG(LogTemp, Warning, TEXT("CurrentEnemyInPlay is %s"), *iD);
+			//UE_LOG(LogTemp, Warning, TEXT("CurrentEnemyInPlay is %s"), *iD);
 			if (AIActor->ActorHasTag(FName(*iD))) OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
 			else OwnerComp.GetBlackboardComponent()->ClearValue(GetSelectedBlackboardKey());
 		}
