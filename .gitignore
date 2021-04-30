@@ -2,6 +2,7 @@ Binaries
 DerivedDataCache
 Intermediate
 Saved
+WindowsNoEditor
 .vscode
 .vs
 *.VC.db
@@ -11,3 +12,7 @@ Saved
 *.suo
 *.xcodeproj
 *.xcworkspace
+WindowsNoEditor/Engine/Extras/Redist/en-us/UE4PrereqSetup_x64.exe
+WindowsNoEditor/Manifest_NonUFSFiles_Win64.txt
+WindowsNoEditor/TeamHeavenAgile.exe
+WindowsNoEditor/TeamHeavenAgile/Content/Paks/TeamHeavenAgile-WindowsNoEditor.pak

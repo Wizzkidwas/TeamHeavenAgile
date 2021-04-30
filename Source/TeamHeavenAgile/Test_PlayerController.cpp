@@ -52,7 +52,7 @@ void ATest_PlayerController::Tick(float DeltaTime)
 		message = TEXT("State: idle");
 		break;
 	}
-	GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, message);
+	//GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, message);
 }
 
 void ATest_PlayerController::SetupInputComponent()
