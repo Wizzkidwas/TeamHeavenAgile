@@ -16,6 +16,10 @@ EBTNodeResult::Type UBTTask_FindRandPositionByPlayer::ExecuteTask(UBehaviorTreeC
 		return EBTNodeResult::Failed;
 	}
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);	
+
+	if (!PlayerPawn) {
+		return EBTNodeResult::Failed;
+	}
 	AAIController* EnemyAIController = OwnerComp.GetAIOwner();				 //Controller that possesses the Enemy.
 	//AActor* AIActor = OwnerComp.GetAIOwner()->GetPawn();
 

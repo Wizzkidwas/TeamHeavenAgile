@@ -59,6 +59,9 @@ void UCustomGameInstance::LoadSelectedLevel(int LevelSelected)
 	case 1:
 		UGameplayStatics::OpenLevel(GetWorld(), PitLevel);
 		break;
+	case 2:
+		UGameplayStatics::OpenLevel(GetWorld(), CageLevel);
+		break;
 	}
 }
 

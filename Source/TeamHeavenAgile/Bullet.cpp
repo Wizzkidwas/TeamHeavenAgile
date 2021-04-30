@@ -31,8 +31,6 @@ ABullet::ABullet()
 void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlayCalled"));
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShotSoundEffect, GetActorLocation(), ShotSoundVolume, 1.0f, 0.0f);
 	OnActorHit.AddDynamic(this, &ABullet::OnHit);
 }
 
@@ -44,9 +42,9 @@ void ABullet::Tick(float DeltaTime)
 }
 
 void ABullet::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
+	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit"));
 	AActor* ProjectileOwner = GetOwner();
 	if (!ProjectileOwner) return;
-	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit"));
 	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit 2nd Call"));
 	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit 3rd Call"));
 
