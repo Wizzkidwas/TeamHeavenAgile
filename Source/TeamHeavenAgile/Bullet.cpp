@@ -10,7 +10,7 @@
 // Sets default values
 ABullet::ABullet()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Creates mesh for Ball and enables collision
@@ -31,7 +31,6 @@ ABullet::ABullet()
 void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlayCalled"));
 	OnActorHit.AddDynamic(this, &ABullet::OnHit);
 }
 
@@ -43,9 +42,9 @@ void ABullet::Tick(float DeltaTime)
 }
 
 void ABullet::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
+	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit"));
 	AActor* ProjectileOwner = GetOwner();
 	if (!ProjectileOwner) return;
-	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit"));
 	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit 2nd Call"));
 	UE_LOG(LogTemp, Warning, TEXT("Bullet Hit 3rd Call"));
 

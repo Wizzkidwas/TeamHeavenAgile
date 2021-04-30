@@ -4,6 +4,7 @@
 #include "Test_Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "Test_PlayerController.h"
 #include "Engine/Engine.h"
 // Sets default values
 ATest_Character::ATest_Character()
@@ -35,6 +36,8 @@ void ATest_Character::BeginPlay()
 		AASword* Sword = GetWorld()->SpawnActor<AASword>(swordClass, FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
 		Sword->SetActorRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
 		Sword->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weaponSocket"));
+		ATest_PlayerController* controllerRef = Cast<ATest_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		if(controllerRef) controllerRef->UpdateSwordRef(Sword);
 	}
 }
 

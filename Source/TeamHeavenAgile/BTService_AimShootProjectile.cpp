@@ -23,5 +23,6 @@ void UBTService_AimShootProjectile::TickNode(UBehaviorTreeComponent& OwnerComp, 
 		FVector SpawnLocation = AIActor->GetActorLocation();
 		FRotator SpawnRotation = AIActor->GetActorRotation();
 		ABullet* TempBall = GetWorld()->SpawnActor<ABullet>(BulletClass, SpawnLocation, SpawnRotation);
+		TempBall->SetOwner(AIActor);
 	}
 }
